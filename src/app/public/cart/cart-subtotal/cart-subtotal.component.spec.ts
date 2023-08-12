@@ -1,0 +1,21 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CartSubtotalComponent } from './cart-subtotal.component';
+
+describe('CartSubtotalComponent', () => {
+  let component: CartSubtotalComponent;
+  let fixture: ComponentFixture<CartSubtotalComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CartSubtotalComponent]
+    });
+    fixture = TestBed.createComponent(CartSubtotalComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

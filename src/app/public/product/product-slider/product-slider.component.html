@@ -1,0 +1,31 @@
+<div class="sticky top-0 overflow-hidden ">
+                                          
+    <div class="relative mb-6 lg:mb-10 lg:h-2/4 ">
+      <a *ngIf="images.length > 1" class="absolute left-0 transform lg:ml-2 top-1/2 translate-1/2 md:hidden" (click)="prevImage()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-5 h-5 text-blue-500 bi bi-chevron-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z">                            </path>
+        </svg>
+      </a>
+
+        <img *ngIf="selectedImage" src="https://directus.thelightprojekt.com/assets/{{ selectedImage.id }}" alt="{{ selectedImage.title }}"
+            class="object-cover w-full lg:h-full "
+            (touchstart)="onTouchStart($event)"
+            (touchend)="onTouchEnd($event)">
+
+      <a *ngIf="images.length > 1" class="absolute right-0 transform lg:mr-2 top-1/2 translate-1/2 md:hidden" (click)="nextImage()" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-5 h-5 text-blue-500 bi bi-chevron-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z">
+        </path>
+        </svg>
+      </a>
+    </div>
+    <div class="flex-wrap hidden md:flex">
+        <div class="w-1/2 p-2 sm:w-1/4 block hover:border-2 border-black" *ngFor="let image of images" 
+        [ngClass]="{'border-2 border-black': image === selectedImage}"
+        (click)="selectImage(image)" 
+        (mouseover)="selectImage(image)">
+                <img src="https://directus.thelightprojekt.com/assets/{{ image.id }}" alt="{{ image.title }}"
+                    class="object-cover w-full lg:h-20" >
+        </div>
+    </div>
+</div>

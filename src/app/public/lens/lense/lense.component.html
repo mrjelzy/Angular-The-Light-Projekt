@@ -1,0 +1,94 @@
+<div class="absolute top-0 h-screen w-screen bg-white z-50" *ngIf="!loading" >
+
+    <div class="fixed top-2 right-4 z-50 cursor-pointer p-4" (click)="close()" >
+        <span
+        class="absolute h-0.5 w-5 bg-black transform rotate-45 "></span>
+        <span
+        class="absolute h-0.5 w-5 bg-black transform -rotate-45"></span>
+    </div>
+
+    <div class="absolute w-11/12 bg-white max-w-lg p-8 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+
+        <div class="text-2xl font-bold text-gray-700">
+            <h2 class="inline-block float-left">
+                {{ frame?.product?.title }}</h2>
+    
+            <p class="inline-block float-right ">
+                <span>{{ price }} €</span>
+            </p>
+        </div>
+    
+      <img
+            src="https://directus.thelightprojekt.com/assets/{{ frame?.product?.thumbnail }}"
+            alt="{{ frame?.product?.alt_thumbnail }}"
+            class="object-cover h-2/6 py-4"
+            />
+
+            <fieldset *ngFor="let attribute of attributes; let j = index"
+            [ngClass]="{
+                'h-0 overflow-hidden': currentStep !== j,
+                'h-min opacity-100': currentStep === j,
+                'transform translate-y-10': currentStep < j,
+                'transform -translate-y-10': currentStep > j
+              }"
+              class="space-y-6 transition-all ease-in-out duration-1000"
+            >
+    
+                <h2 class="text-xl font-bold text-center mx-auto text-gray-700 capitalize">{{ attribute.title }}</h2>
+              
+                <div *ngFor="let optionId of attribute.options_relation; let i = index">
+                  <input
+                    type="radio"
+                    [attr.id]="'Option' + attribute.id + '_Radio' + i"
+                    [attr.name]="'Option' + attribute.id"
+                    value="{{ optionId }}"
+                    class="peer hidden"
+                  />
+              
+                  <label
+                    [attr.for]="'Option' + attribute.id + '_Radio' + i"
+                    (click)="nextStep(optionId)"
+                    class="flex flex-col rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm cursor-pointer hover:border-gray-200 hover:bg-gray-50"
+                  >
+    
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-gray-700">{{ getOptionTitle(optionId) }}</div>
+                      <div class="text-xs md:text-sm font-light">{{ getOptionDescription(optionId) }}</div>
+                    </div>
+                    
+                    <div class="text-gray-900">{{ getOptionPrice(optionId) }} €</div>
+                  </div>
+                  
+                  </label>
+                </div>
+              </fieldset> 
+
+          <div [hidden]="currentStep !== attributes.length" *ngIf="currentStep === attributes.length" class="flex flex-col mt-6">
+
+            <h3 class="text-xl font-semibold text-black pb-6 text-center">Récapitulatif de la commande</h3>
+          
+            <div class="space-y-4 mt-6">
+                <div class="flex items-center justify-between border-b pb-2" *ngFor="let option of optionsSelected">
+                  <h3 class="text-gray-900">{{ option.title }}</h3>
+                  <p class="text-gray-700">{{ option.price }} €</p>
+                </div>
+              </div>
+          
+              <div class="mt-6 flex justify-between items-center">
+                <p class="text-lg font-semibold text-gray-700">Total</p>
+                <p class="text-2xl font-semibold text-gray-900">{{ price }} €</p>
+              </div>
+          
+              <button
+              class="mt-6 px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-150"              
+              (click)="addToCart()">
+              Ajouter au panier
+            </button>
+          </div>
+          
+
+    </div>
+</div>
+
+

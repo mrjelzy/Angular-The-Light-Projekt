@@ -1,0 +1,55 @@
+  <div class="text-sm breadcrumbs bg-zinc-100 shadow-inner">
+    <ul class="max-w-6xl mx-auto px-5 xl:px-1">
+      <li><a routerLink="/collections/{{ collection?.slug }}" routerLinkActive="active">{{ collection?.title }}</a></li> 
+      <li>{{ product?.title }}</li>
+    </ul>
+</div>
+
+<div class="max-w-6xl mx-auto px-5 xl:px-1">
+      <section class="overflow-hidden bg-white">
+        <div class="max-w-6xl py-4 mx-auto">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-4/6 ">
+
+                  <app-product-slider [images]="images"></app-product-slider>
+
+
+                </div>
+                <div class="w-full px-4 md:w-2/6">
+                        <div class="mb-8 flex flex-col">
+                            <span *ngIf="collection?.id === 1" class="text-blue-500 text-sm capitalize text-center">{{ pageInfo?.blue_light_filter }}</span>
+
+                            <div class="mt-2 mb-6 text-center">
+                              <h2 class="mb-2 text-lg font-bold uppercase tracking-tight text-black">{{ product?.title }}</h2>
+                          
+    
+                              <p class="text-xl font-bold border-t pt-2 border-zinc-300 text-black">
+                                  {{ product?.price }} €
+                              </p>
+                          </div>
+                          
+                            <p class="mb-4 font-light text-justify">
+                                {{ product?.description }}
+                            </p>
+
+                            
+                            <app-add-to-cart *ngIf="product?.stock" [title]="getAddToCartText()" (btnClick)="onClickAddToCart()"></app-add-to-cart>
+
+                            <div class="w-full px-4 my-12" *ngIf="!product?.stock">
+                              <span  class="flex items-center justify-center text-center w-full p-4 text-sm  border border-black ">
+                                  {{ pageInfo?.out_of_stock }}</span>
+                             </div>
+                              
+                             <ng-container *ngIf="product">
+                              <app-product-detail [pageInfo]="pageInfo" [rx]="product.rx"></app-product-detail>
+                             </ng-container>
+
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+

@@ -1,0 +1,40 @@
+<nav class="flex flex-row max-w-6xl justify-between mx-auto h-12 items-center px-5 xl:px-1">
+
+<button class="relative w-10 h-10 focus:outline-none z-50" (click)="onClick()" aria-label="menu">
+<div class="absolute transform -translate-x-1/2 -translate-y-1/2 left-0 top-1/2">
+<span
+class="absolute h-0.5 w-5 bg-black transform transition duration-300 ease-in-out {{ hidden ? '-translate-y-1.5' : 'rotate-45 delay-200' }} "></span>
+<span
+class="absolute h-0.5 bg-black transform transition-all duration-200 ease-in-out {{ hidden ? 'w-3 delay-200 opacity-100' : 'w-0 opacity-50'}} "></span>
+<span
+class="absolute h-0.5 w-5 bg-black transform transition duration-300 ease-in-out {{ hidden ? 'translate-y-1.5' : '-rotate-45 delay-200' }} "></span>
+</div>
+</button>
+
+<div class="h-4 w-40 md:h-6 md:w-52 z-50" >
+<img src="/assets/img/website-logo.png" alt="The Light Projekt" height="64" width="507"/>
+</div>
+
+<div class="flex flex-row z-50">
+<a href="#" aria-label="Account">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+</svg>
+</a>
+
+<a class="relative" routerLink="/cart" routerLinkActive="true" aria-label="Cart" >
+    <span class="relative">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+    </span>
+
+    <span class="absolute top-1 right-0.5">
+        <span class="h-3 w-3" *ngIf="cartItemsCount > 0">
+            <span class="animate-ping absolute right-0 inline-flex h-2 w-2 rounded-full bg-blue-400 opacity-75"></span>
+            <span class="absolute right-0 inline-flex rounded-full w-2 h-2 bg-blue-500"></span>
+        </span>
+    </span>
+</a>
+</div>
+</nav>

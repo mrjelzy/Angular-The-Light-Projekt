@@ -1,0 +1,9 @@
+<div class="fixed flex justify-center top-0 left-0 w-full p-10 z-20 h-screen pt-24 bg-white text-black bg-opacity-100 transform delay-100 transition-all duration-300 {{ hidden ? 'opacity-0 -translate-y-full' : 'opacity-100 translate-y-0' }}" >
+
+<div class="flex flex-col gap-y-8 mt-24">
+    <div *ngFor="let link of menuLinks" (click)="onClick()">
+        <a class="text-4xl text-center" routerLink="{{ link.route }}" routerLinkActive="active" >{{ link.title }}</a>
+    </div>
+</div>
+
+</div>
