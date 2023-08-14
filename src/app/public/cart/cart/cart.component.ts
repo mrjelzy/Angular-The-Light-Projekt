@@ -3,6 +3,7 @@ import { CartFacadeService } from '../cart-facade.service';
 import { Configuration } from 'src/app/core/interfaces/Configuration';
 import { Observable, Subscription, first, take } from 'rxjs';
 import { Link } from 'src/app/core/interfaces/Link';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -18,7 +19,7 @@ export class CartComponent {
   pageInfo: any;
 
 
-  constructor(private cartFacade : CartFacadeService){
+  constructor(private cartFacade : CartFacadeService, private router : Router){
     this.cart$ = this.cartFacade.cartItems$;
     this.total$ = this.cartFacade.totalPrice$;
     this.cartFacade.pageInfo$.pipe(first()).subscribe(pageInfo => this.pageInfo = pageInfo);
@@ -31,6 +32,12 @@ export class CartComponent {
   closeClick(id: string){
    console.log("je supprime un objet", id)
    this.cartFacade.removeFromCartById(id);
+  }
+
+  nextClick(){
+    this.router.navigate(['/checkout']).then(() => {
+      console.log('Redirection effectuée vers la page de checkout');
+    });
   }
 
 }

@@ -14,5 +14,7 @@
         <p class="text-lg font-bold">{{ total }} €</p>
       </div>
     </div>
-    <button class="mt-4 capitalize font-semibold w-full px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-150">{{ next }}</button>
+
+    <app-blue-button [label]="'next'" (click)="onClick()" class="mt-4"></app-blue-button>
+
 </div>

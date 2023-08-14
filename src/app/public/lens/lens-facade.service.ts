@@ -35,12 +35,17 @@ export class LensFacadeService {
 
     this.options$ = this.attributes$.pipe(
       take(1),
-      switchMap(attributes => this.loadOptions(attributes)));
+      switchMap(attributes => {
+        if(attributes.length > 0){
+          return this.loadOptions(attributes)
+        }else{
+          return of([]);
+        }
+      }));
    }
 
    private loadSequence(productId: number): Observable<Attribute[]> {
     return this.productService.getSequenceByCollectionId(productId).pipe(
-      take(1),
       // tap(result => console.log('Sequence data:', result)),
       switchMap(result => {
         const sequence = result.data[0];
@@ -50,20 +55,21 @@ export class LensFacadeService {
         }
         console.log('No attributes_relation found.');
         return of([]);
-      })
+      }),
+      take(1)
     );
   }
 
   private loadAttributes(attributeIds: number[]) {
     const attributesObservables = attributeIds.map(attributeId =>
       this.productService.getSequenceAttribute(attributeId).pipe(
-        take(1),
         // tap(sequenceAttribute => console.log(sequenceAttribute)),
         switchMap((sequenceAttribute) => {
           return this.productService.getAttributeById(sequenceAttribute.data.attributes_id).pipe(
             map(result => result.data)
           );
-        })
+        }),
+        take(1)
       )
     );
     return combineLatest(attributesObservables);

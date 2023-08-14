@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-cart-subtotal',
@@ -13,5 +13,10 @@ export class CartSubtotalComponent {
   @Input() free_shipping!: string;
   @Input() totalText!: string;
   @Input() next!: string;
+  @Output() btnClick = new EventEmitter();
+
+  onClick(){
+    this.btnClick.emit();
+  }
   
 }

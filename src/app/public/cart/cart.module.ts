@@ -5,19 +5,21 @@ import { CartItemComponent } from './cart-item/cart-item.component';
 import { CartItemOptionsComponent } from './cart-item-options/cart-item-options.component';
 import { RouterModule } from '@angular/router';
 import { CartSubtotalComponent } from './cart-subtotal/cart-subtotal.component';
+import { CoreModule } from "../../core/core.module";
 
 
 
 @NgModule({
-  declarations: [
-    CartComponent,
-    CartItemComponent,
-    CartItemOptionsComponent,
-    CartSubtotalComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule
-  ]
+    declarations: [
+        CartComponent,
+        CartItemComponent,
+        CartItemOptionsComponent,
+        CartSubtotalComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        CoreModule
+    ]
 })
 export class CartModule { }

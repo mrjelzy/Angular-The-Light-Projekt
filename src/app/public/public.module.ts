@@ -5,6 +5,7 @@ import { ProductModule } from './product/product.module';
 import { CollectionModule } from './collection/collection.module';
 import { CartModule } from './cart/cart.module';
 import { LensModule } from './lens/lens.module';
+import { CheckoutModule } from './checkout/checkout.module';
 
 
 
@@ -17,6 +18,7 @@ import { LensModule } from './lens/lens.module';
     CollectionModule,
     CartModule,
     LensModule,
+    CheckoutModule,
   ]
 })
 export class PublicModule { }

@@ -5,6 +5,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { RouterModule } from '@angular/router';
 import { CartPopupComponent } from './components/cart-popup/cart-popup.component';
+import { BlueButtonComponent } from './components/blue-button/blue-button.component';
 
 
 
@@ -13,13 +14,15 @@ import { CartPopupComponent } from './components/cart-popup/cart-popup.component
     NavbarComponent,
     HeaderComponent,
     MenuComponent,
-    CartPopupComponent,],
+    CartPopupComponent,
+    BlueButtonComponent,],
   imports: [
     CommonModule,
     RouterModule
   ],
   exports: [
-    HeaderComponent, // Exportez votre composant ici pour qu'il soit utilisable en dehors du module
+    HeaderComponent, 
+    BlueButtonComponent// Exportez votre composant ici pour qu'il soit utilisable en dehors du module
   ]
 })
 export class CoreModule { }

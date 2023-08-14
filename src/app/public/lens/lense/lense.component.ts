@@ -42,16 +42,16 @@ export class LenseComponent {
       this.price = frame ? frame.product.price : 0;
       });
 
-    this.lensFacade.attributes$.pipe(first()).subscribe(attributes => {
-      this.attributes = attributes
-      this.attributes.sort((a, b) => a.weight - b.weight);
-    })
-
-    this.lensFacade.options$.pipe(first()).subscribe(options => {
-      this.options = options;
-      this.options.sort((a, b) => a.id - b.id);
-      this.loading = false;
-    })
+      this.lensFacade.attributes$.pipe(first()).subscribe(attributes => {
+        this.attributes = attributes
+        this.attributes.sort((a, b) => a.weight - b.weight);
+      })
+  
+      this.lensFacade.options$.pipe(first()).subscribe(options => {
+        this.options = options;
+        this.options.sort((a, b) => a.id - b.id);
+        this.loading = false;
+      })
   }
 
   getOptionTitle(optionId: number): string {

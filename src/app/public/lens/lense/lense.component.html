@@ -18,9 +18,9 @@
             </p>
         </div>
     
-      <img
-            src="https://directus.thelightprojekt.com/assets/{{ frame?.product?.thumbnail }}"
-            alt="{{ frame?.product?.alt_thumbnail }}"
+      <img *ngIf="frame"
+            src="https://directus.thelightprojekt.com/assets/{{ frame.product.thumbnail }}"
+            alt="{{ frame.product.alt_thumbnail }}"
             class="object-cover h-2/6 py-4"
             />
 
@@ -80,11 +80,13 @@
                 <p class="text-2xl font-semibold text-gray-900">{{ price }} €</p>
               </div>
           
-              <button
+              <!-- <button
               class="mt-6 px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-150"              
               (click)="addToCart()">
               Ajouter au panier
-            </button>
+            </button> -->
+            <app-blue-button [class]="'mt-6'" [label]="'Ajouter au panier'" (click)="addToCart()" ></app-blue-button>
+
           </div>
           
 

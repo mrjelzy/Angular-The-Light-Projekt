@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LenseComponent } from './lense/lense.component';
 import { LensFacadeService } from './lens-facade.service';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 
@@ -10,7 +11,8 @@ import { LensFacadeService } from './lens-facade.service';
     LenseComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    CoreModule
   ],
   providers:[LensFacadeService]
 })

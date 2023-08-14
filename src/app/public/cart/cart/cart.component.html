@@ -16,6 +16,7 @@
             [totalText]="pageInfo.total"
             [summary]="pageInfo.order_summary"
             [free_shipping]="pageInfo.free_shipping"
+            (btnClick)="nextClick()"
             ></app-cart-subtotal>
           </div>
     </ng-container>

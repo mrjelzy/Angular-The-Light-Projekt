@@ -12,7 +12,6 @@ import { Link } from 'src/app/core/interfaces/Link';
   providedIn: 'root'
 })
 export class CartFacadeService {
-
   links$!: Observable<Link[]>;
   pageInfo$!: Observable<any | null>;
 
@@ -99,4 +98,7 @@ export class CartFacadeService {
     );
   }
 
+  getCartItemsLength() {
+    return this.cartItemsSubject.value.length;
+}
 }
