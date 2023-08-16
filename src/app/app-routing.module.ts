@@ -9,6 +9,7 @@ import { GuestComponent } from './public/checkout/guest/guest.component';
 import { CartEmptyGuard } from './core/guards/cart-empty.guard';
 import { AddressComponent } from './public/checkout/address/address.component';
 import { PrescriptionComponent } from './public/checkout/prescription/prescription.component';
+import { CheckoutLayoutComponent } from './public/checkout/checkout-layout/checkout-layout.component';
 
 const routes: Routes = [
   { path: 'collections', component: CollectionComponent },
@@ -16,10 +17,19 @@ const routes: Routes = [
   { path: 'products/:slug', component: ProductComponent },
   { path: 'rx-service', component: LenseComponent },
   { path: 'cart', component:  CartComponent},
-  { path: 'checkout', component:  LoginOrGuestComponent, /* canActivate: [CartEmptyGuard] */},
-  { path: 'checkout/guest', component:  GuestComponent, /* canActivate: [CartEmptyGuard] */},
-  { path: 'checkout/address', component:  AddressComponent, /* canActivate: [CartEmptyGuard] */},
-  { path: 'checkout/prescription', component:  PrescriptionComponent, /* canActivate: [CartEmptyGuard] */},
+  {
+    path: 'checkout',
+    component: CheckoutLayoutComponent,
+    children: [
+      { path: '', redirectTo: 'guest', pathMatch: 'full' }, // Default route
+      { path: 'guest', component: GuestComponent },
+      { path: 'address', component: AddressComponent }
+    ]
+  },
+  // { path: 'checkout', component:  LoginOrGuestComponent, /* canActivate: [CartEmptyGuard] */},
+  // { path: 'checkout/guest', component:  GuestComponent, /* canActivate: [CartEmptyGuard] */},
+  // { path: 'checkout/address', component:  AddressComponent, /* canActivate: [CartEmptyGuard] */},
+  // { path: 'checkout/prescription', component:  PrescriptionComponent, /* canActivate: [CartEmptyGuard] */},
 ];
 
 @NgModule({

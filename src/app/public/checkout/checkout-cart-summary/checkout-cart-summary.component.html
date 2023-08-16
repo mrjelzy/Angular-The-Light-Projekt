@@ -1,0 +1,42 @@
+<div class="p-6 space-y-6">
+    <div class="flex flex-row justify-between">
+        <h3 class="mb-2 text-2xl font-bold text-black" >Ma Commande</h3>
+        <a class="text-sm" routerLink="/cart" routerLinkActive="true" >Modifier</a>
+    </div>
+    
+    <ul class="space-y-4">
+      <li class="flex items-center gap-4 border-b pb-6" *ngFor="let item of cart$ | async">
+        <img
+          src="https://directus.thelightprojekt.com/assets/{{ item.product.thumbnail }}"
+          alt="{{ item.product.alt_thumbnail }}"
+          class="h-24 w-24 rounded object-cover"
+        />
+
+        <div>
+          <h3 class="text-md text-bold text-black">{{ item.product.title }}</h3>
+
+          <dl class="mt-0.5 space-y-px text-[12px] text-gray-600" *ngFor="let option of item.options; let i = index">
+            <div *ngIf="item.attributes">
+              <dt class="inline font-bold">{{ item.attributes[i].display_name }} : </dt>
+              <dd class="inline">{{ option.title }}</dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
+
+    <div class="flex justify-between pb-2 border-b ">
+      <p class="text-gray-700">Sous-total</p>
+      <p class="text-gray-700">{{ total$ | async }} €</p>
+    </div>
+    <div class="flex justify-between pb-2 border-b">
+      <p class="text-gray-700">Livraison</p>
+      <p class="text-gray-700">Free</p>
+    </div>
+    <div class="flex justify-between">
+      <p class="text-lg font-bold">Total</p>
+      <div class="">
+        <p class="text-lg font-bold">{{ total$ | async }} €</p>
+      </div>
+    </div>
+</div>
