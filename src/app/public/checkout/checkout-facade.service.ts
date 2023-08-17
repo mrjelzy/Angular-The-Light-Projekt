@@ -11,6 +11,8 @@ import { Attribute } from 'src/app/core/interfaces/Attribute';
 import { Cart } from 'src/app/core/interfaces/Cart';
 import { CartConfiguration } from 'src/app/core/interfaces/CartConfiguration';
 import { Router } from '@angular/router';
+import { PrescriptionConfiguration } from 'src/app/core/interfaces/PrescriptionConfiguration';
+import { Address } from 'src/app/core/interfaces/Address';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,16 @@ export class CheckoutFacadeService {
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loadingSubject$ = this.loadingSubject.asObservable();
+
+  private _address !: Address;
+
+  public getAdress(){
+    return this._address;
+  }
+
+  public setAdress(value : Address){
+    this._address = value;
+  }
 
   private _guest !: Guest;
 
@@ -73,7 +85,7 @@ export class CheckoutFacadeService {
           );
         })
       ))
-    ).subscribe();
+    ).subscribe( () =>  this.setLoading(false));
   }
 
   private createGuest() : Observable<number> {
@@ -176,15 +188,14 @@ export class CheckoutFacadeService {
     const cart: Cart = {
       guest: guestId,
       state: 0,
-      // total : this.total$
+      total : this.getTotal()
     };
   
     return this.checkoutService.postCart(cart).pipe(
       concatMap(cartResponse => {
         const cartId = cartResponse.data.id; // Récupère l'ID du cart créé
         console.log("Cart created:", cartId);
-        this.setLoading(false);
-        console.log("fin loader")
+        this.cartId = cartId;
         // Crée les relations entre le cart et les configurations
         const createCartConfigurationsObservables = configurationIds.map(configId =>
           this.checkoutService.postCartConfiguration({
@@ -212,6 +223,12 @@ export class CheckoutFacadeService {
     const cartItems = this.cartFacade.getCartItems();
     return cartItems.some(item => item.is_prescription);
   }
+
+  getTotal(){
+    let totalPrice = 0;
+    this.total$.pipe(take(1)).subscribe(total => totalPrice = total);
+    return totalPrice;
+  }
   
   // setWantToModify(value : boolean){
   //   this.wantToModifyGuestSubject.next(value);
@@ -219,17 +236,6 @@ export class CheckoutFacadeService {
 
   setLoading(value : boolean){
     this.loadingSubject.next(value);
-  }
-
-  setLoadingAndTimeout(value: boolean, timeoutDuration: number) {
-    this.loadingSubject.next(value);
-  
-    if (value) {
-      // Si le loader est activé, planifiez la désactivation après le délai spécifié
-      setTimeout(() => {
-        this.setLoading(false);
-      }, timeoutDuration);
-    }
   }
 
 
@@ -358,7 +364,15 @@ export class CheckoutFacadeService {
               prescriptionData.send_prescription_later = true;
             }
   
-            return this.checkoutService.postPrescription(prescriptionData);
+            return this.checkoutService.postPrescription(prescriptionData).pipe(
+              switchMap(prescriptionResponse => {
+                const relation: PrescriptionConfiguration = {
+                  prescriptions_id: prescriptionResponse.data.id,
+                  configurations_id: item.itemId
+                };
+                return this.checkoutService.postPrescriptionConfiguration(relation);
+              })
+            );
           })
         );
       } else {
@@ -368,14 +382,23 @@ export class CheckoutFacadeService {
           send_prescription_later: true
         };
         console.log("Later Prescription", prescriptionData)
-        return this.checkoutService.postPrescription(prescriptionData);
-      }
+        return this.checkoutService.postPrescription(prescriptionData).pipe(
+          switchMap(prescriptionResponse => {
+            const relation: PrescriptionConfiguration = {
+              prescriptions_id: prescriptionResponse.data.id,
+              configurations_id: item.itemId
+            };
+            return this.checkoutService.postPrescriptionConfiguration(relation);
+          })
+        );
+        }
     });
   
     forkJoin(uploadObservables).subscribe(
       () => {
         console.log("Fichiers envoyés et prescriptions créées avec succès.");
         // Continuer avec le reste du processus de commande
+          this.setLoading(false);
       },
       error => {
         console.error("Erreur lors de l'envoi des fichiers ou de la création des prescriptions:", error);
@@ -383,6 +406,47 @@ export class CheckoutFacadeService {
     );
   }
   
+  createAddress(address : Address){
+    console.log(this.cartId, this._guest.id);
+    if (!this.cartId || !this._guest.id) {
+      console.error("L'adresse ou l'ID du panier est manquant. Impossible de créer l'adresse.");
+      return;
+    }
+    address.guest = this._guest.id;
+    this.postAddressAndPatchCart(address).subscribe(
+      (addressId) => {
+          console.log(`Adresse créée avec l'ID ${addressId}`);
+          // Naviguer vers l'étape suivante
+        this.setLoading(false);
+      },
+      (error) => {
+          console.error("Erreur lors de la création de l'adresse:", error);
+      }
+  );
+  }
+
+  postAddressAndPatchCart(address : Address): Observable<number> {
+    return this.checkoutService.postAddress(address).pipe(
+        switchMap(addressResponse => {
+            // Récupérer l'ID de l'adresse créé
+            this._address = addressResponse.data;
+            const addressId = addressResponse.data.id;
+            // Mettre à jour l'ID de l'adresse dans le panier
+            if (this.cartId) {
+                const updatedCartData = {
+                    address: addressId
+                };
+                return this.checkoutService.patchCart(updatedCartData, this.cartId).pipe(
+                    map(() => addressId)
+                );
+            } else {
+                throw new Error("Impossible de mettre à jour le panier car il n'y a pas de panier ou d'ID de panier.");
+            }
+        })
+    );
+  }
+
+
 
 
   

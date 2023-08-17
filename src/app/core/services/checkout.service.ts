@@ -9,6 +9,8 @@ import { Cart } from '../interfaces/Cart';
 import { CartConfiguration } from '../interfaces/CartConfiguration';
 import { Observable } from 'rxjs';
 import { FileResponse } from '../interfaces/FileResponse';
+import { PrescriptionConfiguration } from '../interfaces/PrescriptionConfiguration';
+import { Address } from '../interfaces/Address';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +62,21 @@ export class CheckoutService {
   postPrescription(data : any){
     const url = `${this.apiUrl}/items/prescriptions`;
     return this.http.post<any>(url, data);
+  }
+
+  postPrescriptionConfiguration(relation: PrescriptionConfiguration) {
+    const url = `${this.apiUrl}/items/prescriptions_configurations`;
+    return this.http.post<any>(url, relation);
+  }
+  
+  postAddress(address : Address){
+    const url = `${this.apiUrl}/items/addresses`;
+    return this.http.post<any>(url, address);
+  }
+
+  patchCart(data : any, id : number){
+    const url = `${this.apiUrl}/items/carts/${id}`;
+    return this.http.patch<any>(url, data);
   }
 
   // patchConfiguration(configuration : ConfigurationForApi, id: string | undefined){

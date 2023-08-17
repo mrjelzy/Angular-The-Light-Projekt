@@ -21,23 +21,38 @@ export class AuthInterceptor implements HttpInterceptor {
                           'https://directus.thelightprojekt.com/items/carts',
                           'https://directus.thelightprojekt.com/items/carts_configurations',
                           'https://directus.thelightprojekt.com/files',
-                          'https://directus.thelightprojekt.com/items/prescriptions'
+                          'https://directus.thelightprojekt.com/items/prescriptions',
+                          'https://directus.thelightprojekt.com/items/prescriptions_configurations',
+                          'https://directus.thelightprojekt.com/items/addresses'
                         ];
-
+    const apiUrl = 'https://directus.thelightprojekt.com/items/';
+    let addSpecificHeader = false;
+    const authToken = 'b53qAgC9Uvn4gYqdtNCBBv-35tnRJdkf';
     // Vérifiez si la requête correspond à vos critères (par exemple, l'URL).
     if (specificUrls.some(url => request.url === url)) {
       // Récupérez le token d'authentification (Bearer token) depuis votre source.
-      const authToken = 'b53qAgC9Uvn4gYqdtNCBBv-35tnRJdkf';
-
+        addSpecificHeader = true;
+    }else if (request.url.startsWith(apiUrl)) {
+      const path = request.url.replace(apiUrl, '');
+      const pathSegments = path.split('/');
+  
+      switch (pathSegments[0]) {
+          case 'carts':
+              if (pathSegments.length > 1) {
+                  addSpecificHeader = true; // Condition pour ajouter l'en-tête spécifique
+              }
+              break;
+          // Ajoutez d'autres cas pour d'autres types d'URL si nécessaire
+      }
+    }
       // Ajoutez le token Bearer à l'en-tête d'autorisation de la requête.
-      if (authToken) {
+    if (addSpecificHeader) {
         request = request.clone({
           setHeaders: {
             Authorization: `Bearer ${authToken}`,
           },
         });
       }
-    }
 
     return next.handle(request);
   }

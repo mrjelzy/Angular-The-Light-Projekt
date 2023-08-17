@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CheckoutFacadeService } from '../checkout-facade.service';
 import { Configuration } from 'src/app/core/interfaces/Configuration';
-import { Observable, map, take } from 'rxjs';
+import { Observable, filter, map, skipWhile, take } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-prescription',
@@ -19,7 +20,7 @@ export class PrescriptionComponent {
   itemsWithLaterOption$: Observable<number[]>;
 
 
-  constructor(private checkoutFacade : CheckoutFacadeService){
+  constructor(private checkoutFacade : CheckoutFacadeService, private router : Router){
     this.cart$ = this.checkoutFacade.configurations$;
     this.selectedFiles$ = this.checkoutFacade.selectedFiles$;
     this.itemFileSelections$ = this.checkoutFacade.itemFileSelections$;
@@ -37,8 +38,22 @@ export class PrescriptionComponent {
   }
 
   handleContinueClick(): void {
-    console.log("je peux continuer");
+    this.checkoutFacade.setLoading(true);
+
     this.checkoutFacade.handleContinueClick();
+
+    this.checkoutFacade.loadingSubject$.pipe(
+      filter(loading => !loading),
+      take(1)).subscribe( () => 
+        this.redirectToNextStep()
+    )
+  }
+
+  redirectToNextStep() {
+      console.log("je peux continuer vers address");
+      this.router.navigate(['/checkout/address']).then(() => {
+        console.log('Redirection effectuée pour obtenir l\'address');
+      });
   }
   
 }

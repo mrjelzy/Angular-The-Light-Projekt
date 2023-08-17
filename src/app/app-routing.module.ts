@@ -10,6 +10,7 @@ import { CartEmptyGuard } from './core/guards/cart-empty.guard';
 import { AddressComponent } from './public/checkout/address/address.component';
 import { PrescriptionComponent } from './public/checkout/prescription/prescription.component';
 import { CheckoutLayoutComponent } from './public/checkout/checkout-layout/checkout-layout.component';
+import { PaymentComponent } from './public/checkout/payment/payment.component';
 
 const routes: Routes = [
   { path: 'collections', component: CollectionComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'guest', pathMatch: 'full' }, // Default route
       { path: 'guest', component: GuestComponent },
       { path: 'prescription', component: PrescriptionComponent },
-      { path: 'address', component: AddressComponent }
+      { path: 'address', component: AddressComponent },
+      { path: 'payment', component: PaymentComponent }
     ]
   },
   // { path: 'checkout', component:  LoginOrGuestComponent, /* canActivate: [CartEmptyGuard] */},

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable, filter, skipWhile, take } from 'rxjs';
 import { Configuration } from 'src/app/core/interfaces/Configuration';
 import { CartFacadeService } from '../../cart/cart-facade.service';
 import { Router } from '@angular/router';
@@ -70,16 +70,15 @@ export class GuestComponent {
       }
 
 
-      this.checkoutFacade.setLoadingAndTimeout(true, 3000);
+      this.checkoutFacade.setLoading(true);
       console.log("je lance le loader")
 
       this.checkoutFacade.setGuest(guest);
       this.checkoutFacade.createGuestAndConfigurationAndCart();
 
-      this.checkoutFacade.loadingSubject$.subscribe(loading => {
-        if(!loading)
-          this.redirectToNextStep();
-      })
+      this.checkoutFacade.loadingSubject$.pipe(
+        filter(loading => !loading),
+         take(1)).subscribe( () => this.redirectToNextStep())
 
     } else {
       // Le formulaire est invalide, affichez un message d'erreur ou prenez des mesures

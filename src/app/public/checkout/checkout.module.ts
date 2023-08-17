@@ -11,6 +11,7 @@ import { CheckoutLayoutComponent } from './checkout-layout/checkout-layout.compo
 import { RouterModule } from '@angular/router';
 import { CheckoutCartSummaryComponent } from './checkout-cart-summary/checkout-cart-summary.component';
 import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
+import { PaymentComponent } from './payment/payment.component';
 
 
 
@@ -23,7 +24,8 @@ import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-p
         ShippingMethodComponent,
         CheckoutLayoutComponent,
         CheckoutCartSummaryComponent,
-        CheckoutProgressBarComponent
+        CheckoutProgressBarComponent,
+        PaymentComponent
     ],
     imports: [
         CommonModule,
