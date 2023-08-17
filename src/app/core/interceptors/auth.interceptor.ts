@@ -19,7 +19,9 @@ export class AuthInterceptor implements HttpInterceptor {
                           'https://directus.thelightprojekt.com/items/configurations_options',
                           'https://directus.thelightprojekt.com/items/configurations',
                           'https://directus.thelightprojekt.com/items/carts',
-                          'https://directus.thelightprojekt.com/items/carts_configurations'
+                          'https://directus.thelightprojekt.com/items/carts_configurations',
+                          'https://directus.thelightprojekt.com/files',
+                          'https://directus.thelightprojekt.com/items/prescriptions'
                         ];
 
     // Vérifiez si la requête correspond à vos critères (par exemple, l'URL).

@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckoutLayoutComponent } from './checkout-layout/checkout-layout.component';
 import { RouterModule } from '@angular/router';
 import { CheckoutCartSummaryComponent } from './checkout-cart-summary/checkout-cart-summary.component';
+import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
 
 
 
@@ -21,7 +22,8 @@ import { CheckoutCartSummaryComponent } from './checkout-cart-summary/checkout-c
         AddressComponent,
         ShippingMethodComponent,
         CheckoutLayoutComponent,
-        CheckoutCartSummaryComponent
+        CheckoutCartSummaryComponent,
+        CheckoutProgressBarComponent
     ],
     imports: [
         CommonModule,

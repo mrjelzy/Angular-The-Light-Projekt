@@ -5,6 +5,7 @@ import { CartFacadeService } from '../../cart/cart-facade.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CheckoutFacadeService } from '../checkout-facade.service';
+import { Guest } from 'src/app/core/interfaces/Guest';
 
 @Component({
   selector: 'app-guest',
@@ -16,20 +17,22 @@ export class GuestComponent {
   cart$ !: Observable<Configuration[]>;
   cart !: Configuration[];
 
-  form: FormGroup;
+  form !: FormGroup;
   submitted : boolean = false;
 
   constructor(private checkoutFacade : CheckoutFacadeService, 
-              private formBuilder: FormBuilder){
+              private formBuilder: FormBuilder,
+              private router : Router){    
+  }
 
-
+  ngOnInit(){
+    const guest = this.checkoutFacade.getGuest();
     this.form = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      numberPhone: ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      firstName: [guest ? guest.first_name : '', Validators.required],
+      lastName: [guest ? guest.last_name : '', Validators.required],
+      email: [guest ? guest.email : '', [Validators.required, Validators.email]],
+      numberPhone: [guest ? guest.number_phone : '', [Validators.required, Validators.pattern('[0-9]*')]],
     });
-
   }
 
   get firstNameControl() {
@@ -59,11 +62,42 @@ export class GuestComponent {
       const emailValue = this.form.get('email')?.value;
       const numberPhoneValue = this.form.get('numberPhone')?.value;
 
-      this.checkoutFacade.createGuestAndConfigurationAndCart(firstNameValue, lastNameValue, emailValue, numberPhoneValue);
-      
+      const guest:Guest = {
+        first_name: firstNameValue,
+        last_name: lastNameValue,
+        email: emailValue,
+        number_phone: numberPhoneValue
+      }
+
+
+      this.checkoutFacade.setLoadingAndTimeout(true, 3000);
+      console.log("je lance le loader")
+
+      this.checkoutFacade.setGuest(guest);
+      this.checkoutFacade.createGuestAndConfigurationAndCart();
+
+      this.checkoutFacade.loadingSubject$.subscribe(loading => {
+        if(!loading)
+          this.redirectToNextStep();
+      })
+
     } else {
       // Le formulaire est invalide, affichez un message d'erreur ou prenez des mesures
       console.log('Le formulaire est invalide. Veuillez corriger les erreurs.');
+    }
+  }
+
+  redirectToNextStep(){
+    const needPrescription = this.checkoutFacade.checkIfPrescriptionNeeded();
+
+    if(needPrescription){
+      this.router.navigate(['/checkout/prescription']).then(() => {
+        console.log('Redirection effectuée pour obtenir les prescriptions');
+      });
+    }else{
+      this.router.navigate(['/checkout/address']).then(() => {
+        console.log('Redirection effectuée pour obtenir l\'address');
+      });
     }
   }
 }

@@ -1,1 +1,51 @@
-<p>prescription works!</p>
+<h2 class="mx-auto max-w-lg text-center text-2xl font-bold text-black">Prescription Médicale</h2>
+<div class="p-4" *ngFor="let item of cart$ | async">
+    <ng-container *ngIf="item.directusId && item.is_prescription">
+        <div class="flex flex-col items-center lg:flex-row justify-center gap-8">
+            <img alt="Developer" src="https://directus.thelightprojekt.com/assets/{{ item.product.thumbnail }}"
+                class="h-52 w-52 object-cover" />
+
+            <div class="flex flex-col justify-center max-w-md">
+                <ul class="space-y-2">
+                    <label
+                        class="relative cursor-pointer block rounded-lg border p-4 hover:border-blue-600
+                                                {{ (itemFileSelections$ | async)?.[item.directusId] ? 'border-blue-500 text-blue-500' : 'border-gray-700 text-black' }}">
+                        <strong class="font-medium">{{ (itemFileSelections$ | async)?.[item.directusId] ? 'Fichier chargé' : 'Téléchargez une photo' }}</strong>
+                        <p class="mt-1 text-xs font-medium text-gray-700">
+                            {{ (itemFileSelections$ | async)?.[item.directusId] ? (selectedFiles$ | async)?.[item.directusId]?.name : 'La méthode la plus rapide' }}
+                        </p>
+                        <input type="radio" name="prescriptionOption" value="file" class="opacity-0 w-0 h-0 absolute"
+                        [checked]="(itemFileSelections$ | async)?.[item.directusId]"
+                        (click)="fileInput.click()" />
+
+                        <input style="display: none" type="file" (change)="handleOptionChange($event ,'file', item.directusId)" #fileInput />
+                    </label>
+
+                    <label
+                    class="relative cursor-pointer block rounded-lg border p-4 hover:border-blue-600
+                           {{ (itemSendPrescriptionLater$ | async)?.[item.directusId] ? 'border-blue-500 text-blue-500' : 'border-gray-700 text-black' }}"
+                    >
+                    <strong class="font-medium">{{ (itemSendPrescriptionLater$ | async)?.[item.directusId] ? 'Envoi de la prescription reporté' : 'Envoyer plus tard la prescription' }}</strong>
+                    <p class="mt-1 text-xs font-medium text-gray-700">
+                      Nous reviendrons vers toi par email pour obtenir l'ordonnance
+                    </p>
+                    <input type="radio" name="prescriptionOption" value="later" class="opacity-0 w-0 h-0 absolute"
+                            [checked]="(itemSendPrescriptionLater$ | async)?.[item.directusId]"
+                            (change)="handleOptionChange(null ,'later', item.directusId)" />
+                  </label>
+                </ul>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<div class="mx-auto max-w-lg text-center ">
+    <app-blue-button [disabled]="!(canContinue() | async)" [class]="'mt-6'" [label]="'Continuer'" (click)="handleContinueClick()"></app-blue-button>
+</div>
+
+<div *ngFor="let item of cart$ | async">
+    <!-- ... autres détails de l'article ... -->
+    <ng-container *ngIf="item.directusId">
+        <p>Item {{ item.directusId }} - File: {{ (itemsWithFiles$ | async)?.includes(item.directusId) ? 'Yes' : 'No' }}, Later: {{ (itemsWithLaterOption$ | async)?.includes(item.directusId) ? 'Yes' : 'No' }}</p>
+    </ng-container>
+  </div>
+  

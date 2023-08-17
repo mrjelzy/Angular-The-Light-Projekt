@@ -4,6 +4,7 @@ import { Attribute } from "./Attribute";
 
 export interface Configuration {
     id: string;
+    directusId ?: number;
     product: Product;
     attributes?: Attribute[];
     options?: Option[];

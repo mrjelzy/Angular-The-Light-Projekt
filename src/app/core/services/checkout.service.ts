@@ -8,6 +8,7 @@ import { ConfigurationAttribute } from '../interfaces/ConfigurationAttribute';
 import { Cart } from '../interfaces/Cart';
 import { CartConfiguration } from '../interfaces/CartConfiguration';
 import { Observable } from 'rxjs';
+import { FileResponse } from '../interfaces/FileResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,19 @@ export class CheckoutService {
   postCartConfiguration(relation : CartConfiguration){
     const url = `${this.apiUrl}/items/carts_configurations`;
     return this.http.post<any>(url, relation);
+  }
+
+  postFile(file : File, folder : string) : Observable<FileResponse>{
+    const formData = new FormData();
+    formData.append('folder', folder);
+    formData.append('file', file);
+    const url = `${this.apiUrl}/files`; // Mettez l'URL appropriée pour le téléchargement de fichiers
+    return this.http.post<FileResponse>(url, formData);
+  }
+
+  postPrescription(data : any){
+    const url = `${this.apiUrl}/items/prescriptions`;
+    return this.http.post<any>(url, data);
   }
 
   // patchConfiguration(configuration : ConfigurationForApi, id: string | undefined){

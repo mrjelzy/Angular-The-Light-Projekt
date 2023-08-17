@@ -21,6 +21,7 @@ export class CartFacadeService {
   private totalPriceSubject = new BehaviorSubject<number>(0);
   totalPrice$ = this.totalPriceSubject.asObservable();
 
+
   constructor(private webContentService : WebContentService) {
     this.links$ = this.loadLinks();
     this.pageInfo$ = this.loadPageContent();
@@ -96,6 +97,11 @@ export class CartFacadeService {
       map(result => result.data[0]),
       take(1)
     );
+  }
+
+  getCartItems() {
+     const cartItems = this.cartItemsSubject.value;
+     return cartItems;
   }
 
   getCartItemsLength() {

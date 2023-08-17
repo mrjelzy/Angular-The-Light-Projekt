@@ -23,6 +23,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'guest', pathMatch: 'full' }, // Default route
       { path: 'guest', component: GuestComponent },
+      { path: 'prescription', component: PrescriptionComponent },
       { path: 'address', component: AddressComponent }
     ]
   },
