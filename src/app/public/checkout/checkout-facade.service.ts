@@ -25,6 +25,9 @@ export class CheckoutFacadeService {
   cartId !: number;
   total$ !: Observable<number>;
 
+  private secretTokenIntent = new BehaviorSubject<string>("");
+  secretTokenIntent$ = this.secretTokenIntent.asObservable();
+
   // private wantToModifyGuestSubject = new BehaviorSubject<boolean>(false);
   // wantToModifyGuestSubject$ = this.wantToModifyGuestSubject.asObservable();
 
@@ -413,16 +416,35 @@ export class CheckoutFacadeService {
       return;
     }
     address.guest = this._guest.id;
-    this.postAddressAndPatchCart(address).subscribe(
-      (addressId) => {
-          console.log(`Adresse créée avec l'ID ${addressId}`);
-          // Naviguer vers l'étape suivante
-        this.setLoading(false);
-      },
-      (error) => {
-          console.error("Erreur lors de la création de l'adresse:", error);
-      }
-  );
+    // this.postAddressAndPatchCart(address).subscribe(
+    //   (addressId) => {
+    //       console.log(`Adresse créée avec l'ID ${addressId}`);
+    //       // Naviguer vers l'étape suivante
+    //     this.setLoading(false);
+    //   },
+    //   (error) => {
+    //       console.error("Erreur lors de la création de l'adresse:", error);
+    //   }
+    // );
+      this.postAddressAndPatchCart(address).pipe(
+        switchMap(() => {
+          console.log(`Adresse créée et panier mis à jour.`);
+
+          const data = {
+            amount : this.getTotal()*100
+          }
+          console.log(data);
+          // Maintenant, appelez la méthode createPaymentIntent
+          this.createPaymentIntent(data);
+          // Return EMPTY pour ne pas propager de valeur à l'observable externe
+          return EMPTY;
+        }),
+        catchError(error => {
+          console.error("Erreur lors de la création de l'adresse ou de la mise à jour du panier:", error);
+          this.setLoading(false);
+          return EMPTY;
+        })
+      ).subscribe();
   }
 
   postAddressAndPatchCart(address : Address): Observable<number> {
@@ -444,6 +466,18 @@ export class CheckoutFacadeService {
             }
         })
     );
+  }
+
+
+  // Payment 
+
+  createPaymentIntent(data : any){
+    this.checkoutService.postPaymentIntent(data).pipe(take(1)).subscribe(pi => {
+      if(pi){
+        this.secretTokenIntent.next(pi.clientSecret);
+        this.setLoading(false);
+      }
+    })
   }
 
 

@@ -18,6 +18,7 @@ import { Address } from '../interfaces/Address';
 export class CheckoutService {
 
   private apiUrl = 'https://directus.thelightprojekt.com';
+  private paymentApi = 'https://payment.thelightprojekt.com'
 
   constructor(private http: HttpClient) { }
 
@@ -77,6 +78,11 @@ export class CheckoutService {
   patchCart(data : any, id : number){
     const url = `${this.apiUrl}/items/carts/${id}`;
     return this.http.patch<any>(url, data);
+  }
+
+  postPaymentIntent(data: any){
+    const url  = `${this.paymentApi}/create-payment-intent`;
+    return this.http.post<any>(url, data);
   }
 
   // patchConfiguration(configuration : ConfigurationForApi, id: string | undefined){

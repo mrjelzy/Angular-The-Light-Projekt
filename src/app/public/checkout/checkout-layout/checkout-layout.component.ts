@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { CheckoutFacadeService } from '../checkout-facade.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-checkout-layout',
@@ -17,7 +19,8 @@ export class CheckoutLayoutComponent {
 
   loading$ : Observable<boolean>;
 
-  constructor(private checkoutFacade : CheckoutFacadeService){
+  constructor(private checkoutFacade : CheckoutFacadeService ){
     this.loading$ = this.checkoutFacade.loadingSubject$;
   }
+
 }
