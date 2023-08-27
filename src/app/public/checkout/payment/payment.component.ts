@@ -20,6 +20,9 @@ import {
 export class PaymentComponent {
     
   private clientSecret !: string;
+  private guestId !: number | undefined;
+  private cartId !: number | undefined;
+  error : any | null = null;
 
   elements !: StripeElements;
   card !: StripePaymentElement;
@@ -56,18 +59,47 @@ export class PaymentComponent {
       this.express.mount("#express-element");
       });
 
+      this.guestId = this.checkoutFacade.getGuest().id;
+      this.cartId = this.checkoutFacade.cartId;
+  }
+
+  ngAfterViewInit() {
+    this.express.on('confirm', async (event) => {
+      this.checkoutFacade.setLoading(true);
+      this.paying = true;
+      this.elements.submit().then(async (result) => {
+        if (result.error) {
+          console.log(result.error);
+          this.checkoutFacade.setLoading(false);
+          this.error = result.error;
+          this.paying = false;
+          return;
+        }
+        this.confirmPayment();
+
+    })
+    });
   }
 
   pay() {
+    this.checkoutFacade.setLoading(true);
     this.paying = true;
     this.elements.submit().then(async (result) => {
 
       if (result.error) {
         console.log(result.error);
+        this.checkoutFacade.setLoading(false);
+        this.error = result.error;
         this.paying = false;
         return;
       }
 
+      this.confirmPayment();
+
+  })
+  }
+
+  confirmPayment(){
     this.stripeService.confirmPayment({
       elements: this.elements,
       clientSecret : this.clientSecret,
@@ -78,17 +110,20 @@ export class PaymentComponent {
             email: this.checkoutFacade.getGuest().email,
           },
         },
-      return_url: 'https://e54c-92-223-89-142.ngrok-free.app/',
+      return_url: `https://3992-2a01-cb1d-8171-fe00-6502-f489-595c-d60c.ngrok-free.app/confirmation`,
       },
       redirect: 'always',
     }).subscribe(result => {
+      this.checkoutFacade.setLoading(false);
       this.paying = false;
-      console.log(result);
+      this.error = result.error;
+      console.log(this.error);
     });
-  })
   }
 
-
+  closeModal(){
+    this.error = null;
+  }
 
 
 }

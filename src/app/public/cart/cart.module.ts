@@ -8,7 +8,6 @@ import { CartSubtotalComponent } from './cart-subtotal/cart-subtotal.component';
 import { CoreModule } from "../../core/core.module";
 
 
-
 @NgModule({
     declarations: [
         CartComponent,

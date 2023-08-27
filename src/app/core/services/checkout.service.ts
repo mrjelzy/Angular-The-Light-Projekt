@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { FileResponse } from '../interfaces/FileResponse';
 import { PrescriptionConfiguration } from '../interfaces/PrescriptionConfiguration';
 import { Address } from '../interfaces/Address';
+import { Order } from '../interfaces/Order';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,12 @@ export class CheckoutService {
   postPaymentIntent(data: any){
     const url  = `${this.paymentApi}/create-payment-intent`;
     return this.http.post<any>(url, data);
+  }
+
+  postOrder(order: Order){
+    console.log("je creer une order")
+    const url = `${this.apiUrl}/items/orders`;
+    return this.http.post<any>(url, order);
   }
 
   // patchConfiguration(configuration : ConfigurationForApi, id: string | undefined){

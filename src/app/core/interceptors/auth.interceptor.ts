@@ -23,7 +23,8 @@ export class AuthInterceptor implements HttpInterceptor {
                           'https://directus.thelightprojekt.com/files',
                           'https://directus.thelightprojekt.com/items/prescriptions',
                           'https://directus.thelightprojekt.com/items/prescriptions_configurations',
-                          'https://directus.thelightprojekt.com/items/addresses'
+                          'https://directus.thelightprojekt.com/items/addresses',
+                          'https://directus.thelightprojekt.com/items/orders'
                         ];
     const apiUrl = 'https://directus.thelightprojekt.com/items/';
     let addSpecificHeader = false;

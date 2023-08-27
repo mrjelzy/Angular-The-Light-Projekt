@@ -13,6 +13,7 @@ import { CartConfiguration } from 'src/app/core/interfaces/CartConfiguration';
 import { Router } from '@angular/router';
 import { PrescriptionConfiguration } from 'src/app/core/interfaces/PrescriptionConfiguration';
 import { Address } from 'src/app/core/interfaces/Address';
+import { Order } from 'src/app/core/interfaces/Order';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class CheckoutFacadeService {
 
   private secretTokenIntent = new BehaviorSubject<string>("");
   secretTokenIntent$ = this.secretTokenIntent.asObservable();
+
 
   // private wantToModifyGuestSubject = new BehaviorSubject<boolean>(false);
   // wantToModifyGuestSubject$ = this.wantToModifyGuestSubject.asObservable();
@@ -51,6 +53,15 @@ export class CheckoutFacadeService {
   }
   public setGuest(value: Guest) {
     this._guest = value;
+  }
+
+  private _order !: Order;
+
+  public getOrder(): Order {
+    return this._order;
+  }
+  public setOrder(value: Order) {
+    this._order = value;
   }
   
   constructor(private checkoutService : CheckoutService,
@@ -431,7 +442,11 @@ export class CheckoutFacadeService {
           console.log(`Adresse créée et panier mis à jour.`);
 
           const data = {
-            amount : this.getTotal()*100
+            amount : this.getTotal()*100,
+            metadata : {
+              cartId : this.cartId,
+              guestId : this._guest.id
+            }
           }
           console.log(data);
           // Maintenant, appelez la méthode createPaymentIntent
@@ -480,8 +495,9 @@ export class CheckoutFacadeService {
     })
   }
 
-
-
+  // createAnOrderAndUpdatePayment(order : Order){
+  //   return this.checkoutService.postOrder(order);
+  // }
 
   
 }

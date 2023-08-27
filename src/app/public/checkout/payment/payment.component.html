@@ -8,8 +8,8 @@
     <!-- Express Checkout Element will be inserted here -->
   </div>
     <app-blue-button [class]="'mt-6'" [label]="'Payer'" (click)="pay()"></app-blue-button>
+    <app-modal *ngIf="error !== null" [error]="true" [title]="'Echec du Paiement'" [text]="error.message" [isModalVisible]="true" (btnClick)="closeModal()"></app-modal>
+
 </div>
-
-
 
     

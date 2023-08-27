@@ -11,13 +11,17 @@ import { AddressComponent } from './public/checkout/address/address.component';
 import { PrescriptionComponent } from './public/checkout/prescription/prescription.component';
 import { CheckoutLayoutComponent } from './public/checkout/checkout-layout/checkout-layout.component';
 import { PaymentComponent } from './public/checkout/payment/payment.component';
+import { ConfirmationComponent } from './public/checkout/confirmation/confirmation.component';
+import { HomepageComponent } from './public/home/homepage/homepage.component';
 
 const routes: Routes = [
+  { path: '', component: HomepageComponent },
   { path: 'collections', component: CollectionComponent },
   { path: 'collections/:slug', component: CollectionComponent },
   { path: 'products/:slug', component: ProductComponent },
   { path: 'rx-service', component: LenseComponent },
   { path: 'cart', component:  CartComponent},
+  {path : 'confirmation', component: ConfirmationComponent},
   {
     path: 'checkout',
     component: CheckoutLayoutComponent,
@@ -26,7 +30,7 @@ const routes: Routes = [
       { path: 'guest', component: GuestComponent },
       { path: 'prescription', component: PrescriptionComponent },
       { path: 'address', component: AddressComponent },
-      { path: 'payment', component: PaymentComponent }
+      { path: 'payment', component: PaymentComponent },
     ]
   },
   // { path: 'checkout', component:  LoginOrGuestComponent, /* canActivate: [CartEmptyGuard] */},

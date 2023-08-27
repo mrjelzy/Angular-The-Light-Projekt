@@ -13,6 +13,7 @@ import { CheckoutCartSummaryComponent } from './checkout-cart-summary/checkout-c
 import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
 import { PaymentComponent } from './payment/payment.component';
 import { NgxStripeModule } from 'ngx-stripe';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 
 
@@ -26,7 +27,8 @@ import { NgxStripeModule } from 'ngx-stripe';
         CheckoutLayoutComponent,
         CheckoutCartSummaryComponent,
         CheckoutProgressBarComponent,
-        PaymentComponent
+        PaymentComponent,
+        ConfirmationComponent
     ],
     imports: [
         CommonModule,

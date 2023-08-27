@@ -42,10 +42,9 @@
     <app-blue-button [disabled]="!(canContinue() | async)" [class]="'mt-6'" [label]="'Continuer'" (click)="handleContinueClick()"></app-blue-button>
 </div>
 
-<div *ngFor="let item of cart$ | async">
-    <!-- ... autres détails de l'article ... -->
+<!-- <div *ngFor="let item of cart$ | async">
     <ng-container *ngIf="item.directusId">
         <p>Item {{ item.directusId }} - File: {{ (itemsWithFiles$ | async)?.includes(item.directusId) ? 'Yes' : 'No' }}, Later: {{ (itemsWithLaterOption$ | async)?.includes(item.directusId) ? 'Yes' : 'No' }}</p>
     </ng-container>
-  </div>
+</div> -->
   
