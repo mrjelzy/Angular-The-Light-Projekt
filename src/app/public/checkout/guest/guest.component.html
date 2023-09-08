@@ -114,5 +114,7 @@ class="relative block rounded-md border border-gray-200 shadow-sm focus-within:b
 
 
 <app-blue-button [class]="'mt-6'" [label]="'Continuer'" (click)="onSubmit()"></app-blue-button>
+<app-modal *ngIf="error !== null" [error]="true" [title]="'Echec lors du traitement'" [text]="error" [isModalVisible]="true" (btnClick)="closeModal()"></app-modal>
+
 </form>
 

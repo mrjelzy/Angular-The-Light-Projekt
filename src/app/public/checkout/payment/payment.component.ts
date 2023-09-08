@@ -110,7 +110,7 @@ export class PaymentComponent {
             email: this.checkoutFacade.getGuest().email,
           },
         },
-      return_url: `https://3992-2a01-cb1d-8171-fe00-6502-f489-595c-d60c.ngrok-free.app/confirmation`,
+      return_url: `http://localhost:4200/confirmation`,
       },
       redirect: 'always',
     }).subscribe(result => {
@@ -123,6 +123,7 @@ export class PaymentComponent {
 
   closeModal(){
     this.error = null;
+    this.checkoutFacade.setErrorToNull();
   }
 
 

@@ -29,14 +29,18 @@ export class CheckoutFacadeService {
   private secretTokenIntent = new BehaviorSubject<string>("");
   secretTokenIntent$ = this.secretTokenIntent.asObservable();
 
-
-  // private wantToModifyGuestSubject = new BehaviorSubject<boolean>(false);
-  // wantToModifyGuestSubject$ = this.wantToModifyGuestSubject.asObservable();
-
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loadingSubject$ = this.loadingSubject.asObservable();
 
+  private errorSubject = new BehaviorSubject<string | null>(null);
+  errorSubject$ = this.errorSubject.asObservable();
+
+
   private _address !: Address;
+
+  private _guest !: Guest;
+
+  private _order !: Order;
 
   public getAdress(){
     return this._address;
@@ -46,8 +50,6 @@ export class CheckoutFacadeService {
     this._address = value;
   }
 
-  private _guest !: Guest;
-
   public getGuest(): Guest {
     return this._guest;
   }
@@ -55,13 +57,25 @@ export class CheckoutFacadeService {
     this._guest = value;
   }
 
-  private _order !: Order;
-
   public getOrder(): Order {
     return this._order;
   }
   public setOrder(value: Order) {
     this._order = value;
+  }
+
+  getTotal(){
+    let totalPrice = 0;
+    this.total$.pipe(take(1)).subscribe(total => totalPrice = total);
+    return totalPrice;
+  }
+  
+  setLoading(value : boolean){
+    this.loadingSubject.next(value);
+  }
+
+  setErrorToNull(){
+    this.errorSubject.next(null);
   }
   
   constructor(private checkoutService : CheckoutService,
@@ -114,9 +128,14 @@ export class CheckoutFacadeService {
           this._guest = response.data;
           console.log("Guest created:", response.data.id);
           return of(response.data.id)
-        }));
+        }),
+        catchError(error => {
+          console.error("Error creating guest:", error);
+          this.errorSubject.next('An error has occurred, please try again');
+          this.setLoading(false);
+          return throwError(error);
+      }));
     }
-
   }
 
   private createConfiguration(configuration: Configuration): Observable<number> {
@@ -139,6 +158,8 @@ export class CheckoutFacadeService {
       }),
       catchError(error => {
         console.error('Error creating configuration:', error);
+        this.errorSubject.next('An error has occurred, please try again');
+        this.setLoading(false);
         return throwError(error);
       }),
       // Return the created configuration ID
@@ -178,6 +199,8 @@ export class CheckoutFacadeService {
     return forkJoin(allObservables).pipe(
       catchError(error => {
         console.error('Error creating attributes or options:', error);
+        this.errorSubject.next('An error has occurred, please try again');
+        this.setLoading(false);
         return throwError(error);
       }),
       concatMap(() => {
@@ -221,6 +244,8 @@ export class CheckoutFacadeService {
         return forkJoin(createCartConfigurationsObservables).pipe(
           catchError(error => {
             console.error('Error creating cart configurations:', error);
+            this.errorSubject.next('An error has occurred, please try again');
+            this.setLoading(false);
             return throwError(error);
           }),
           map(() => cartId) // Retourne l'ID du cart
@@ -228,6 +253,8 @@ export class CheckoutFacadeService {
       }),
       catchError(error => {
         console.error('Error creating cart:', error);
+        this.errorSubject.next('An error has occurred, please try again');
+        this.setLoading(false);
         return throwError(error);
       })
     );
@@ -236,20 +263,6 @@ export class CheckoutFacadeService {
   checkIfPrescriptionNeeded(): boolean {
     const cartItems = this.cartFacade.getCartItems();
     return cartItems.some(item => item.is_prescription);
-  }
-
-  getTotal(){
-    let totalPrice = 0;
-    this.total$.pipe(take(1)).subscribe(total => totalPrice = total);
-    return totalPrice;
-  }
-  
-  // setWantToModify(value : boolean){
-  //   this.wantToModifyGuestSubject.next(value);
-  // }
-
-  setLoading(value : boolean){
-    this.loadingSubject.next(value);
   }
 
 
@@ -416,6 +429,8 @@ export class CheckoutFacadeService {
       },
       error => {
         console.error("Erreur lors de l'envoi des fichiers ou de la création des prescriptions:", error);
+        this.errorSubject.next('An error has occurred, please try again');
+        this.setLoading(false);
       }
     );
   }
@@ -424,6 +439,8 @@ export class CheckoutFacadeService {
     console.log(this.cartId, this._guest.id);
     if (!this.cartId || !this._guest.id) {
       console.error("L'adresse ou l'ID du panier est manquant. Impossible de créer l'adresse.");
+      this.errorSubject.next('An error has occurred, please try again');
+      this.setLoading(false);
       return;
     }
     address.guest = this._guest.id;
@@ -456,6 +473,7 @@ export class CheckoutFacadeService {
         }),
         catchError(error => {
           console.error("Erreur lors de la création de l'adresse ou de la mise à jour du panier:", error);
+          this.errorSubject.next('An error has occurred, please try again');
           this.setLoading(false);
           return EMPTY;
         })

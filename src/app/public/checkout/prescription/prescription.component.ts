@@ -19,6 +19,7 @@ export class PrescriptionComponent {
   itemsWithFiles$: Observable<number[]>;
   itemsWithLaterOption$: Observable<number[]>;
 
+  error : any | null = null;
 
   constructor(private checkoutFacade : CheckoutFacadeService, private router : Router){
     this.cart$ = this.checkoutFacade.configurations$;
@@ -27,6 +28,15 @@ export class PrescriptionComponent {
     this.itemSendPrescriptionLater$ = this.checkoutFacade.itemSendPrescriptionLater$;
     this.itemsWithFiles$ = this.checkoutFacade.getItemsWithFiles();
     this.itemsWithLaterOption$ = this.checkoutFacade.getItemsWithLaterOption();
+  }
+
+  ngOnInit(){
+    this.checkoutFacade.errorSubject$.subscribe(error => {
+      if(error)
+        this.error = error;
+    });
+
+    this.checkIfGuest();
   }
 
   handleOptionChange(event: any, option: 'file' | 'later', itemId: number): void {
@@ -44,8 +54,11 @@ export class PrescriptionComponent {
 
     this.checkoutFacade.loadingSubject$.pipe(
       filter(loading => !loading),
-      take(1)).subscribe( () => 
-        this.redirectToNextStep()
+      take(1)).subscribe( () => {
+        if(this.error === null)
+          this.redirectToNextStep()
+      }
+
     )
   }
 
@@ -54,6 +67,20 @@ export class PrescriptionComponent {
       this.router.navigate(['/checkout/address']).then(() => {
         console.log('Redirection effectuée pour obtenir l\'address');
       });
+  }
+
+  closeModal(){
+    this.error = null;
+    this.checkoutFacade.setErrorToNull();
+  }
+
+  checkIfGuest(){
+    const guest = this.checkoutFacade.getGuest();
+    if (!guest || !guest.id) {
+      this.router.navigate(['/checkout/guest']).then(() => {
+        console.log('Redirection effectuée vers la page Guest');
+      });
+    }
   }
   
 }

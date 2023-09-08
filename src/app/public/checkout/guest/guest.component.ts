@@ -20,6 +20,8 @@ export class GuestComponent {
   form !: FormGroup;
   submitted : boolean = false;
 
+  error : any | null = null;
+
   constructor(private checkoutFacade : CheckoutFacadeService, 
               private formBuilder: FormBuilder,
               private router : Router){    
@@ -32,6 +34,11 @@ export class GuestComponent {
       lastName: [guest ? guest.last_name : '', Validators.required],
       email: [guest ? guest.email : '', [Validators.required, Validators.email]],
       numberPhone: [guest ? guest.number_phone : '', [Validators.required, Validators.pattern('[0-9]*')]],
+    });
+
+    this.checkoutFacade.errorSubject$.subscribe(error => {
+      if(error)
+        this.error = error;
     });
   }
 
@@ -71,14 +78,15 @@ export class GuestComponent {
 
 
       this.checkoutFacade.setLoading(true);
-      console.log("je lance le loader")
-
       this.checkoutFacade.setGuest(guest);
       this.checkoutFacade.createGuestAndConfigurationAndCart();
 
       this.checkoutFacade.loadingSubject$.pipe(
         filter(loading => !loading),
-         take(1)).subscribe( () => this.redirectToNextStep())
+         take(1)).subscribe( () => {
+          if(this.error === null)
+            this.redirectToNextStep()
+          })
 
     } else {
       // Le formulaire est invalide, affichez un message d'erreur ou prenez des mesures
@@ -98,5 +106,10 @@ export class GuestComponent {
         console.log('Redirection effectuée pour obtenir l\'address');
       });
     }
+  }
+
+  closeModal(){
+    this.error = null;
+    this.checkoutFacade.setErrorToNull();
   }
 }

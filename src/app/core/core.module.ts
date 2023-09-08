@@ -6,6 +6,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { RouterModule } from '@angular/router';
 import { BlueButtonComponent } from './components/blue-button/blue-button.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 
@@ -15,7 +16,8 @@ import { ModalComponent } from './components/modal/modal.component';
     HeaderComponent,
     MenuComponent,
     BlueButtonComponent,
-    ModalComponent,],
+    ModalComponent,
+    FooterComponent,],
   imports: [
     CommonModule,
     RouterModule
@@ -23,7 +25,8 @@ import { ModalComponent } from './components/modal/modal.component';
   exports: [
     HeaderComponent, 
     BlueButtonComponent,
-    ModalComponent// Exportez votre composant ici pour qu'il soit utilisable en dehors du module
+    ModalComponent,
+    FooterComponent// Exportez votre composant ici pour qu'il soit utilisable en dehors du module
   ]
 })
 export class CoreModule { }

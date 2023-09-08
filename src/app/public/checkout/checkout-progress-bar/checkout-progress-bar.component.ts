@@ -21,13 +21,13 @@ export class CheckoutProgressBarComponent {
       ? [
           { label: 'Details', route: '/checkout/guest' },
           { label: 'Prescription', route: '/checkout/prescription' },
-          { label: 'Address', route: '/checkout/address'},
-          { label: 'Payment', route: '/checkout/payment' }
+          { label: 'Adresse', route: '/checkout/address'},
+          { label: 'Paiement', route: '/checkout/payment' }
         ]
       : [
           { label: 'Details', route: '/checkout/guest' },
-          { label: 'Address', route: '/checkout/address' },
-          { label: 'Payment', route: '/checkout/payment' }
+          { label: 'Adresse', route: '/checkout/address' },
+          { label: 'Paiement', route: '/checkout/payment' }
         ];
  }
 

@@ -13,6 +13,7 @@ import { filter, take } from 'rxjs';
 export class AddressComponent implements OnInit {
   form!: FormGroup;
   submitted = false;
+  error : any | null = null;
 
   constructor(
     private checkoutFacade: CheckoutFacadeService,
@@ -27,6 +28,13 @@ export class AddressComponent implements OnInit {
       postalCode: ['', Validators.required],
       country: ['', Validators.required]
     });
+    this.checkoutFacade.errorSubject$.subscribe(error => {
+      if(error)
+        this.error = error;
+    });
+
+    this.checkIfGuest();
+    
   }
 
   get addressControl() {
@@ -70,23 +78,30 @@ export class AddressComponent implements OnInit {
 
       this.checkoutFacade.loadingSubject$.pipe(
         filter(loading => !loading),
-         take(1)).subscribe( () => this.redirectToNextStep())
+         take(1)).subscribe( () => {
+          if(this.error === null)
+            this.redirectToNextStep()
+        })
     }
   }
 
   checkIfGuest(){
-    setTimeout(() => {
     const guest = this.checkoutFacade.getGuest();
     if (!guest || !guest.id) {
       this.router.navigate(['/checkout/guest']).then(() => {
         console.log('Redirection effectuée vers la page Guest');
       });
-    } }, 100);
+    }
   }
 
   redirectToNextStep(){
     this.router.navigate(['/checkout/payment']).then(() => {
       console.log('Redirection effectuée pour obtenir les prescriptions');
     });
+  }
+
+  closeModal(){
+    this.error = null;
+    this.checkoutFacade.setErrorToNull();
   }
 }

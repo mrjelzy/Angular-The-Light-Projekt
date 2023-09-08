@@ -33,6 +33,11 @@ export class WebContentService {
     return this.http.get<any>(url);
   }
 
+  getCartLinks() : Observable<any>{
+    const url = `${this.apiUrl}/items/cart_links`;
+    return this.http.get<any[]>(url);
+  }
+
   getImagesByProductId(id: number) : Observable<any>{
     const url = `${this.apiUrl}/items/products_files?filter[products_id][_eq]=${id}`;
     return this.http.get<any>(url);

@@ -24,6 +24,7 @@ const routes: Routes = [
   {path : 'confirmation', component: ConfirmationComponent},
   {
     path: 'checkout',
+    canActivate: [CartEmptyGuard],
     component: CheckoutLayoutComponent,
     children: [
       { path: '', redirectTo: 'guest', pathMatch: 'full' }, // Default route
@@ -41,7 +42,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabledBlocking'
+    initialNavigation: 'enabledBlocking',
+    scrollPositionRestoration: 'enabled'
 })],
   exports: [RouterModule]
 })

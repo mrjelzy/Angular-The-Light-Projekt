@@ -1,11 +1,12 @@
   <div class="text-sm breadcrumbs bg-zinc-100 shadow-inner">
     <ul class="max-w-6xl mx-auto px-5 xl:px-1">
+      <li><a routerLink="/" routerLinkActive="true">Accueil</a></li>
       <li><a routerLink="/collections/{{ collection?.slug }}" routerLinkActive="active">{{ collection?.title }}</a></li> 
       <li>{{ product?.title }}</li>
     </ul>
 </div>
 
-<div class="max-w-6xl mx-auto px-5 xl:px-1">
+<div class="max-w-6xl mx-auto px-5 xl:px-1 min-h-screen">
       <section class="overflow-hidden bg-white">
         <div class="max-w-6xl py-4 mx-auto">
             <div class="flex flex-wrap -mx-4">

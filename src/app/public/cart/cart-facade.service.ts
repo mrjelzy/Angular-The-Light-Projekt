@@ -86,7 +86,7 @@ export class CartFacadeService {
 
 
   private loadLinks(): Observable<Link[]> {
-    return this.webContentService.getMenuLinks().pipe(
+    return this.webContentService.getCartLinks().pipe(
       take(1),
       map(result => result.data)
     );

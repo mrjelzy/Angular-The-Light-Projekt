@@ -9,7 +9,7 @@
     <input
         type="text"
         id="Address"
-        class=" h-12 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+        class=" h-12 px-2 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
         placeholder="Address"
         formControlName="address"
     />
@@ -32,7 +32,7 @@ class="relative block rounded-md border border-gray-200 shadow-sm focus-within:b
 <input
     type="text"
     id="City"
-    class=" h-12 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+    class=" h-12 px-2 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
     placeholder="City"
     formControlName="city"
 />
@@ -55,7 +55,7 @@ class="relative block rounded-md border border-gray-200 shadow-sm focus-within:b
 <input
     type="text"
     id="postalcode"
-    class=" h-12 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+    class=" h-12 px-2 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
     placeholder="postalcode"
     formControlName="postalCode"
 />
@@ -79,7 +79,7 @@ class="relative block rounded-md border border-gray-200 shadow-sm focus-within:b
 <input
     type="text"
     id="Country"
-    class=" h-12 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+    class=" h-12 px-2 w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
     placeholder="Country"
     formControlName="country"
 />
@@ -99,5 +99,7 @@ class="relative block rounded-md border border-gray-200 shadow-sm focus-within:b
 
 <app-blue-button [class]="'mt-6'" [label]="'Continuer'" (click)="onSubmit()"></app-blue-button>
 </form>
+<app-modal *ngIf="error !== null" [error]="true" [title]="'Echec lors du traitement'" [text]="error" [isModalVisible]="true" (btnClick)="closeModal()"></app-modal>
+
 
 

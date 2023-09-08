@@ -41,6 +41,7 @@
 <div class="mx-auto max-w-lg text-center ">
     <app-blue-button [disabled]="!(canContinue() | async)" [class]="'mt-6'" [label]="'Continuer'" (click)="handleContinueClick()"></app-blue-button>
 </div>
+<app-modal *ngIf="error !== null" [error]="true" [title]="'Echec lors du traitement'" [text]="error" [isModalVisible]="true" (btnClick)="closeModal()"></app-modal>
 
 <!-- <div *ngFor="let item of cart$ | async">
     <ng-container *ngIf="item.directusId">
