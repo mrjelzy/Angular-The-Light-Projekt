@@ -8,5 +8,9 @@ import { Component, Input } from '@angular/core';
 export class ProductDetailComponent {
     @Input() pageInfo: any | null;
     @Input() rx !: boolean ;
+    @Input() size_eye!: number;
+    @Input() size_bridge!: number;
+    @Input() size_temple!: number;
+    @Input() material!: string;
 
 }

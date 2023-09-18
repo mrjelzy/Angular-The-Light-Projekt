@@ -6,6 +6,10 @@ import { CollectionModule } from './collection/collection.module';
 import { CartModule } from './cart/cart.module';
 import { LensModule } from './lens/lens.module';
 import { CheckoutModule } from './checkout/checkout.module';
+import { ContactModule } from './contact/contact.module';
+import { OrderTrackingModule } from './order-tracking/order-tracking.module';
+import { PageModule } from './page/page.module';
+import { FaqModule } from './faq/faq.module';
 
 
 
@@ -19,6 +23,10 @@ import { CheckoutModule } from './checkout/checkout.module';
     CartModule,
     LensModule,
     CheckoutModule,
+    ContactModule,
+    OrderTrackingModule,
+    PageModule,
+    FaqModule,
   ]
 })
 export class PublicModule { }

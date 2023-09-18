@@ -7,27 +7,34 @@
           class="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:order-last lg:h-full"
         >
           <img
-            alt="Party"
+            alt="Lunettes de vue en titane"
             src="/assets/img/home/1.16.png"
-            class="absolute inset-0 h-full w-full object-cover"
+            class="absolute inset-0 h-full w-full object-contain"
           />
         </div>
   
-        <div class="lg:py-24">
-          <h2 class="text-3xl font-bold sm:text-4xl">Grow your audience</h2>
+        <div class="lg:py-24 text-center">
+          <h2 class="text-2xl font-medium">Des lunettes en Titane</h2>
   
           <p class="mt-4 text-gray-600">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut qui hic
-            atque tenetur quis eius quos ea neque sunt, accusantium soluta minus
-            veniam tempora deserunt? Molestiae eius quidem quam repellat.
+            L'alliance parfaite entre style et résistance.
           </p>
   
-          <a
-            href="#"
-            class="mt-8 inline-block rounded bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400"
-          >
-            Get Started Today
-          </a>
+          <div class="flex justify-center gap-8 mt-8 flex-wrap">   
+            <a *ngFor="let link of links"
+            class="group relative inline-block text-sm font-medium text-black focus:outline-none focus:ring active:text-black"
+            routerLink="{{ link.route }}" routerLinkActive="true"
+            >
+            <span
+            class="absolute inset-0 translate-x-0 translate-y-0 bg-black transition-transform group-hover:translate-y-0.5 group-hover:translate-x-0.5"
+            ></span>
+
+            <span class="relative block border border-current bg-white px-8 py-3">
+            {{ link.title }}
+            </span>
+            </a>
+
+        </div>
         </div>
       </div>
     </div>
@@ -39,32 +46,62 @@
     >
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
         <div
-          class="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:order-first lg:h-full"
+          class="relative h-52 overflow-hidden rounded-lg sm:h-52 lg:order-first lg:h-full"
         >
           <img
-            alt="Party"
-            src="/assets/img/home/1.16.png"
-            class="absolute inset-0 h-full w-full object-cover"
+            alt="Un Verre ophtalmique"
+            src="/assets/img/home/lens.png"
+            class="absolute inset-0 h-full w-full object-contain"
           />
         </div>
   
         <div class="lg:py-24 text-center">
-          <h2 class="text-3xl font-bold sm:text-4xl">Grow your audience</h2>
+          <h2 class="text-2xl font-medium">Vision Précise et Protection</h2>
   
           <p class="mt-4 text-gray-600">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut qui hic
-            atque tenetur quis eius quos ea neque sunt, accusantium soluta minus
-            veniam tempora deserunt? Molestiae eius quidem quam repellat.
+            Explorez une infinité de possibilités avec nos verres personnalisés. Du filtre à la lumière bleue aux verres solaires, trouvez la combinaison parfaite pour une vision parfaite
           </p>
   
-          <a
-            href="#"
-            class="mt-8 inline-block rounded bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400"
-          >
-            Get Started Today
-          </a>
+          <div class="flex justify-center gap-8 mt-8 flex-wrap">   
+            <a
+            class="group relative inline-block text-sm font-medium text-black focus:outline-none focus:ring active:text-black"
+            >
+            <span
+            class="absolute inset-0 translate-x-0 translate-y-0 bg-black transition-transform group-hover:translate-y-0.5 group-hover:translate-x-0.5"
+            ></span>
+
+            <span class="relative block border border-current bg-white px-8 py-3">
+              Explorez notre gamme
+            </span>
+            </a>
+
+        </div>
+
         </div>
       </div>
     </div>
   </section>
   
+  <section>
+    <div
+    class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 text-center bg-zinc-50">
+    <h2 class="text-4xl font-regular text-black">The Care Projekt.</h2>
+    <p class="mt-4 text-2xl font-extralight text-black">
+      Trouvez les réponses dont vous avez besoin auprès de notre support.
+    </p>
+    <div class="flex justify-center gap-8 mt-8 flex-wrap">   
+      <a routerLink="contact" routerLinkActive="true"
+      class="group relative inline-block text-sm font-medium text-black focus:outline-none focus:ring active:text-black"
+      >
+      <span
+      class="absolute inset-0 translate-x-0 translate-y-0 bg-black transition-transform group-hover:translate-y-0.5 group-hover:translate-x-0.5"
+      ></span>
+
+      <span class="relative block border border-current bg-zinc-50 px-8 py-3">
+        Contacter nous
+      </span>
+      </a>
+
+  </div>
+  </div>
+  </section>

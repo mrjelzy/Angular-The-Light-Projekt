@@ -1,23 +1,30 @@
+<ng-container *ngIf="collection">
+<div class="text-sm breadcrumbs bg-zinc-100 shadow-inner">
+  <ul class="max-w-6xl mx-auto px-5 xl:px-1">
+    <li><a routerLink="/" routerLinkActive="true">Accueil</a></li>
+    <li>{{ collection.title }}</li> 
+  </ul>
+</div>
+
 <div class="max-w-6xl mx-auto px-5 xl:px-1 min-h-screen">
     <section>
-        <div class="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+        <div class="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-8 lg:px-8">
           <div class="text-center" *ngIf="collection">
-            <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+            <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">
               {{ collection.title }}
-            </h2>
+            </h1>
       
             <p class="max-w-md mx-auto mt-4 text-gray-500">
                 {{ collection.description }}
             </p>
           </div>
       
-          <ul class="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-4">
+          <ul class="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-4" *ngIf="products">
             <li *ngFor="let product of products">
                 <app-product-card [product]="product"></app-product-card>
             </li>            
           </ul>
         </div>
       </section>
-      
 </div>
-
+</ng-container>

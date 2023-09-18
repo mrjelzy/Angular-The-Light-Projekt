@@ -7,4 +7,15 @@ import { Component } from '@angular/core';
 })
 export class HomepageComponent {
 
+  links = [
+    {
+      title : "Optique",
+      route : "/products/kuma-clear"
+    },
+    {
+      title : "Solaire",
+      route : "/products/kuma-sun"
+    }
+  ]
+
 }

@@ -2,7 +2,7 @@
 
 <div class="flex flex-col gap-y-8 mt-24">
     <div *ngFor="let link of menuLinks" (click)="onClick()">
-        <a class="text-4xl text-center" routerLink="{{ link.route }}" routerLinkActive="active" >{{ link.title }}</a>
+        <a class="text-4xl text-center" routerLink="{{ link.route }}" routerLinkActive="true" >{{ link.title }}</a>
     </div>
 </div>
 

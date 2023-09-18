@@ -36,14 +36,15 @@ export class ProductComponent {
     this.route.paramMap.subscribe(params => {
       const slug = params.get('slug');
       this.productFacade.loadProduct(slug);
+      this.productFacade.product$.pipe(first()).subscribe(product => this.product = product);
+      this.productFacade.collection$.pipe(first()).subscribe(collection => this.collection = collection);
+      this.productFacade.images$.pipe(first()).subscribe(images =>{
+        this.images = images
+      } );
+      this.productFacade.pageInfo$.pipe(first()).subscribe(pageInfo => this.pageInfo = pageInfo);
       });
 
-    this.productFacade.product$.pipe(first()).subscribe(product => this.product = product);
-    this.productFacade.collection$.pipe(first()).subscribe(collection => this.collection = collection);
-    this.productFacade.images$.pipe(first()).subscribe(images =>{
-      this.images = images
-    } );
-    this.productFacade.pageInfo$.pipe(first()).subscribe(pageInfo => this.pageInfo = pageInfo);
+
   }
 
 

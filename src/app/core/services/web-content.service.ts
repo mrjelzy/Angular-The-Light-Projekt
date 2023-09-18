@@ -23,6 +23,16 @@ export class WebContentService {
     return this.http.get<any[]>(url);
   }
 
+  getPageBySlug(slug : string | null) : Observable<any>{
+    const url = `${this.apiUrl}/items/pages?filter[slug][_eq]=${slug}`;
+    return this.http.get<any>(url);
+  }
+
+  getsPageBySlugWithBlock(slug : string | null) : Observable<any>{
+    const url = `${this.apiUrl}/items/pages?filter[slug][_eq]=${slug}&fields=blocks.*.*, *`;
+    return this.http.get<any>(url);
+  }
+
   getPageProductContent(): Observable<any>{
     const url = `${this.apiUrl}/items/product_page`;
     return this.http.get<any>(url);

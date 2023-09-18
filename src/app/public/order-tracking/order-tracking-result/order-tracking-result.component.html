@@ -1,0 +1,58 @@
+<div class="max-w-3xl mx-auto px-5 xl:px-1 min-h-screen pt-10">
+    <div id="progress-bar">
+        <h2 class="sr-only">Steps</h2>
+    
+        <div
+            class="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg after:bg-gray-100">
+            <ol class="relative z-10 flex justify-between text-sm font-medium text-gray-500">
+                <li *ngFor="let step of steps; let i = index" class="flex items-center gap-2 p-2">
+                        <span
+                        class="h-6 w-6 rounded-full text-center text-[10px]/6 text-white font-bold"
+                        [ngClass]="{
+                          'bg-blue-600': i < getIndexStep(),
+                          'bg-green-600 ': i === getIndexStep(),
+                          'bg-gray-100': i > getIndexStep(),
+                        }"
+                      >
+                        {{ i + 1 }}
+                      </span>
+    
+                      <span class="hidden sm:block">{{ step.text }}</span>
+    
+                  </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="border p-4 my-4 rounded-md">
+        <div class="flex flex-col text-center space-y-2 pb-2">
+            <h2 class="text-xl text-gray-800 sm:text-xl justify-self-center">Information sur la commande</h2>
+            <h3 class="sm:hidden justify-self-center font-semibold">Etat : {{ getEtat() }}</h3>
+        </div>
+
+        <div class="border-t text-center py-2">
+            <h3 class="text-gray-800 font-semibold" >Adresse</h3>
+            <p>
+                {{ this.data?.guest?.first_name}} {{this.data?.guest?.last_name}}
+            </p>
+            <p> {{ this.data?.cart?.address?.address }}</p>
+            <p> {{ this.data?.cart?.address?.additional_address }}</p>
+            <p> {{ this.data?.cart?.address?.postal_code }} {{ this.data?.cart?.address?.city}}</p>
+            <p> {{ this.data?.cart?.address?.country }}</p>
+        </div>
+
+        <div class="border-t text-center py-2">
+            <h3 class="text-gray-800 font-semibold" >Prix</h3>
+            <p>
+                {{ this.data?.total }} €
+            </p>
+        </div>
+
+        <div class="border-t text-center py-2" *ngIf="checkIfShipped()">
+            <app-blue-button [class]="'mt-6 max-w-sm'" [label]="'Suivi de la livraison'" (click)="onSubmit()"></app-blue-button>
+        </div>
+
+    </div>
+    <app-order-item *ngFor="let item of this.products" [cartItem]="item"></app-order-item>
+
+</div>

@@ -1,6 +1,6 @@
 <div class="flow-root">
     <div class="divide-y divide-gray-100">
-      <details class="group py-4 [&_summary::-webkit-details-marker]:hidden">
+      <details class="group py-4 [&_summary::-webkit-details-marker]:hidden" *ngIf="rx">
         <summary
           class="flex cursor-pointer items-center justify-between text-gray-900"
         >
@@ -41,11 +41,9 @@
           </span>
         </summary>
   
-        <p class="mt-4 leading-relaxed text-gray-700 text-sm">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic
-          veritatis molestias culpa in, recusandae laboriosam neque aliquid libero
-          nesciunt voluptate dicta quo officiis explicabo consequuntur distinctio
-          corporis earum similique!
+        <p class="mt-4 leading-relaxed text-gray-700 text-sm" >
+         {{ size_eye }} - {{size_bridge}} - {{size_temple}} <br>
+         Material : {{material}}
         </p>
       </details>
   
@@ -94,7 +92,7 @@
         </p>
       </details>
 
-      <details class="group py-4 [&_summary::-webkit-details-marker]:hidden" *ngIf="rx">
+      <!-- <details class="group py-4 [&_summary::-webkit-details-marker]:hidden" *ngIf="rx">
         <summary
           class="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
         >
@@ -137,7 +135,7 @@
   
         <p class="mt-4 leading-relaxed text-gray-700 text-sm" [innerHTML]="pageInfo?.refund_content">
         </p>
-      </details>
+      </details> -->
 
       <details class="group py-4 [&_summary::-webkit-details-marker]:hidden">
         <summary

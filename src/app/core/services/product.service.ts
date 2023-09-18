@@ -26,6 +26,10 @@ export class ProductService {
     return this.http.get<any>(url);
   }
 
+  getProductById(id : number | null) : Observable<any>{
+    const url = `${this.apiUrl}/items/products?filter[id][_eq]=${id}`;
+    return this.http.get<any>(url);
+  }
 
   getAttributeById(id : number): Observable<any>{
     const url = `${this.apiUrl}/items/attributes/${id}`;
@@ -51,4 +55,5 @@ export class ProductService {
     const url = `${this.apiUrl}/items/attributes_options/${id}`;
     return this.http.get<any>(url);
   }
+
 }

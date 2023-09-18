@@ -43,6 +43,30 @@ export class AuthInterceptor implements HttpInterceptor {
                   addSpecificHeader = true; // Condition pour ajouter l'en-tête spécifique
               }
               break;
+              
+          case 'orders':
+            if (pathSegments.length > 1) {
+                addSpecificHeader = true; // Condition pour ajouter l'en-tête spécifique
+            }
+            break;
+
+          case 'configurations':
+            if (pathSegments.length > 1) {
+                addSpecificHeader = true; // Condition pour ajouter l'en-tête spécifique
+            }
+            break;
+
+          case 'configurations_options':
+            if (pathSegments.length > 1) {
+                addSpecificHeader = true; // Condition pour ajouter l'en-tête spécifique
+            }
+            break;
+
+          case 'configurations_attributes':
+            if (pathSegments.length > 1) {
+                addSpecificHeader = true; // Condition pour ajouter l'en-tête spécifique
+            }
+            break;
           // Ajoutez d'autres cas pour d'autres types d'URL si nécessaire
       }
     }

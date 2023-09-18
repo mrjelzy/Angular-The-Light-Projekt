@@ -13,9 +13,20 @@ import { CheckoutLayoutComponent } from './public/checkout/checkout-layout/check
 import { PaymentComponent } from './public/checkout/payment/payment.component';
 import { ConfirmationComponent } from './public/checkout/confirmation/confirmation.component';
 import { HomepageComponent } from './public/home/homepage/homepage.component';
+import { ContactPageComponent } from './public/contact/contact-page/contact-page.component';
+import { OrderTrackingPageComponent } from './public/order-tracking/order-tracking-page/order-tracking-page.component';
+import { SimplePageComponent } from './public/page/simple-page/simple-page.component';
+import { FaqPageComponent } from './public/faq/faq-page/faq-page.component';
+import { OrderTrackingResultComponent } from './public/order-tracking/order-tracking-result/order-tracking-result.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
+  { path: 'page/:slug', component: SimplePageComponent },
+  { path: 'faq', component: FaqPageComponent },
+  { path: 'contact', component: ContactPageComponent},
+  { path: 'order-tracking', component: OrderTrackingPageComponent},
+  { path: 'order-tracking/detail', component: OrderTrackingResultComponent},
+  { path: 'order-tracking/detail/:guest_id/:order_id', component: OrderTrackingResultComponent},
   { path: 'collections', component: CollectionComponent },
   { path: 'collections/:slug', component: CollectionComponent },
   { path: 'products/:slug', component: ProductComponent },
