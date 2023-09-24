@@ -18,11 +18,14 @@
           </p>
       </div>
   
-    <img *ngIf="frame"
-          src="https://directus.thelightprojekt.com/assets/{{ frame.product.thumbnail }}"
-          alt="{{ frame.product.alt_thumbnail }}"
-          class="object-cover h-2/6 py-4"
-          />
+    <div class="h-2/6">
+      <img *ngIf="frame"
+      src="https://directus.thelightprojekt.com/assets/{{ frame.product.thumbnail }}"
+      alt="{{ frame.product.alt_thumbnail }}"
+      class="object-cover h-2/6 py-4"
+      />
+    </div>
+
 
           <fieldset *ngFor="let attribute of attributes; let j = index"
           [ngClass]="{
