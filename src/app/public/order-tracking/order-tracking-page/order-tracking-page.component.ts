@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { OrderTrackingFacadeService } from '../order-tracking-facade.service';
 import { OrderResponse } from 'src/app/core/interfaces/OrderResponse';
 import { first } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-order-tracking-page',
@@ -18,14 +19,21 @@ export class OrderTrackingPageComponent {
   data !: OrderResponse | null;
   error : any | null = null;
 
+  title = "The Light Projekt | Suivre ma commande"
+
   constructor(private formBuilder: FormBuilder, private orderTrackingFacade : OrderTrackingFacadeService,
-              private router : Router){}
+              private router : Router,
+              private titleService: Title,  
+              private metaTagService: Meta  ){}
 
   ngOnInit(){
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       orderNumber: ['', [Validators.required, Validators.pattern('[0-9]*')]],
     });
+
+    this.titleService.setTitle(this.title);
+    this.metaTagService.updateTag({name:'robots', content: 'noindex, nofollow'})
   }
 
   get emailControl() {

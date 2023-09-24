@@ -4,6 +4,7 @@ import { OrderTrackingFacadeService } from '../order-tracking-facade.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { Configuration } from 'src/app/core/interfaces/Configuration';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-order-tracking-result',
@@ -16,8 +17,10 @@ export class OrderTrackingResultComponent {
 
   steps: any[] = [];
   
-
-  constructor(private route : ActivatedRoute, private orderTrackingFacade : OrderTrackingFacadeService, private router : Router){
+  title = "The Light Projekt | Suivre ma commande"
+  constructor(private route : ActivatedRoute, private orderTrackingFacade : OrderTrackingFacadeService, private router : Router,
+              private titleService: Title,  
+              private metaTagService: Meta ){
     this.steps = [
           { label: 'Paid', text: 'Payé'},
           { label: 'In process', text: 'En cours de traitement'},
@@ -27,6 +30,10 @@ export class OrderTrackingResultComponent {
   }
 
   ngOnInit(){
+
+    this.titleService.setTitle(this.title);
+    this.metaTagService.updateTag({name:'robots', content: 'noindex, nofollow'})
+
     let guestId !: string | null;
     let orderId !: string | null ;
     this.route.paramMap.subscribe(params => {

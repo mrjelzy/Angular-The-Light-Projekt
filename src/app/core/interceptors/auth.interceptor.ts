@@ -28,7 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         ];
     const apiUrl = 'https://directus.thelightprojekt.com/items/';
     let addSpecificHeader = false;
-    const authToken = 'b53qAgC9Uvn4gYqdtNCBBv-35tnRJdkf';
+    const authToken = process.env['DIRECTUS_API_KEY'];
     // Vérifiez si la requête correspond à vos critères (par exemple, l'URL).
     if (specificUrls.some(url => request.url === url)) {
       // Récupérez le token d'authentification (Bearer token) depuis votre source.

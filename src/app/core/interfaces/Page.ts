@@ -6,9 +6,10 @@ export interface Page {
     date_created: string;
     date_updated: string;
     title: string;
-    meta_title: string;
     description: string;
+    meta_title: string;
     meta_description: string;
+    meta_keywords : string;
     content: string;
     slug: string;
     blocks: Block[];

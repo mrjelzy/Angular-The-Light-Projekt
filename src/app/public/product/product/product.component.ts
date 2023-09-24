@@ -10,6 +10,7 @@ import { CollectionService } from 'src/app/core/services/collection.service';
 import { CartFacadeService } from 'src/app/public/cart/cart-facade.service';
 import { ProductFacadeService } from '../product-facade.service';
 import { first } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product',
@@ -28,7 +29,8 @@ export class ProductComponent {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private productFacade : ProductFacadeService){}
+              private productFacade : ProductFacadeService,
+              private titleService: Title, private metaService: Meta){}
 
 
   ngOnInit() {
@@ -36,7 +38,14 @@ export class ProductComponent {
     this.route.paramMap.subscribe(params => {
       const slug = params.get('slug');
       this.productFacade.loadProduct(slug);
-      this.productFacade.product$.pipe(first()).subscribe(product => this.product = product);
+      this.productFacade.product$.pipe(first()).subscribe(product => {
+        this.product = product
+        this.titleService.setTitle(this.product.meta_title);
+        this.metaService.updateTag({ name: 'description', content: this.product.meta_description });
+        this.metaService.updateTag( { name: 'keywords', content: this.product.meta_keywords });
+        this.metaService.updateTag({name:'robots', content: 'index, follow'});
+
+      });
       this.productFacade.collection$.pipe(first()).subscribe(collection => this.collection = collection);
       this.productFacade.images$.pipe(first()).subscribe(images =>{
         this.images = images

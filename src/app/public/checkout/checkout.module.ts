@@ -36,7 +36,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
-        NgxStripeModule.forRoot('pk_test_51NiI08C3vGjYEX43PVfWk0gelQf6gTUdw0xpWahbfafCzzRXZJhwn93LwRfY8fybXTesAr3ogW0iN8JR9XCzd9r000kReb0ONV'),
+        NgxStripeModule.forRoot(process.env['PAYMENT_API_KEY']),
     ]
 })
 export class CheckoutModule { }

@@ -1,5 +1,5 @@
-<div class="max-w-6xl mx-auto px-5 xl:px-1 min-h-screen">
-    <div class="text-sm mt-4 w-full p-3 bg-gray-50 text-center border">
+<div class="max-w-6xl mx-auto px-5 xl:px-1 min-h-screen" *ngIf="pageInfo">
+    <div class="text-sm mt-4 w-full p-3 bg-gray-50 text-center border" >
         {{ pageInfo.header }}
     </div>
     <ng-container *ngIf="this.total$ | async as total;else noTotal">

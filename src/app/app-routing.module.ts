@@ -18,6 +18,7 @@ import { OrderTrackingPageComponent } from './public/order-tracking/order-tracki
 import { SimplePageComponent } from './public/page/simple-page/simple-page.component';
 import { FaqPageComponent } from './public/faq/faq-page/faq-page.component';
 import { OrderTrackingResultComponent } from './public/order-tracking/order-tracking-result/order-tracking-result.component';
+import { ErrorPageComponent } from './public/page/error-page/error-page.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -45,6 +46,8 @@ const routes: Routes = [
       { path: 'payment', component: PaymentComponent },
     ]
   },
+  { path: 'not-found', component: ErrorPageComponent},
+  {path: '**' , redirectTo: '/not-found'}
   // { path: 'checkout', component:  LoginOrGuestComponent, /* canActivate: [CartEmptyGuard] */},
   // { path: 'checkout/guest', component:  GuestComponent, /* canActivate: [CartEmptyGuard] */},
   // { path: 'checkout/address', component:  AddressComponent, /* canActivate: [CartEmptyGuard] */},

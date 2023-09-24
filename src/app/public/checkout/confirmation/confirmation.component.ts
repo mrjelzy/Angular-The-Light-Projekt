@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Order } from 'src/app/core/interfaces/Order';
 import { CheckoutFacadeService } from '../checkout-facade.service';
 import { take } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-confirmation',
@@ -11,4 +12,14 @@ import { take } from 'rxjs';
 })
 export class ConfirmationComponent {
 
+  title = "The Light Projekt | Confirmation Commande"
+
+  constructor(private titleService: Title,  
+    private metaTagService: Meta ){
+  }
+
+  ngOnInit(){
+    this.titleService.setTitle(this.title);
+    this.metaTagService.updateTag({name:'robots', content: 'noindex, nofollow'})
+  }
 }

@@ -7,6 +7,7 @@ export interface Product {
     description: string;
     meta_description: string;
     meta_title: string;
+    meta_keywords: string;
     size_eye: number;
     size_bridge: number;
     size_temple: number;

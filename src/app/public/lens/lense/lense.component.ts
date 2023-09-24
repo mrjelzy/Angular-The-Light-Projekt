@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LensFacadeService } from '../lens-facade.service';
 import { first } from 'rxjs';
 import { Configuration } from 'src/app/core/interfaces/Configuration';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lense',
@@ -27,7 +28,11 @@ export class LenseComponent {
 
   pageInfo !: any | null;
 
-  constructor(private lensFacade : LensFacadeService, private router: Router){
+  title = "The Light Projekt | Verres"
+
+  constructor(private lensFacade : LensFacadeService, private router: Router,
+    private titleService: Title,  
+    private metaTagService: Meta ){
   }
 
   ngOnInit(){
@@ -52,6 +57,9 @@ export class LenseComponent {
         this.options.sort((a, b) => a.id - b.id);
         this.loading = false;
       })
+
+      this.titleService.setTitle(this.title);
+      this.metaTagService.updateTag({name:'robots', content: 'noindex, nofollow'})
   }
 
   getOptionTitle(optionId: number): string {

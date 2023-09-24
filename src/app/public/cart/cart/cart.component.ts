@@ -4,6 +4,7 @@ import { Configuration } from 'src/app/core/interfaces/Configuration';
 import { Observable, Subscription, first, take } from 'rxjs';
 import { Link } from 'src/app/core/interfaces/Link';
 import { Router } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-cart',
@@ -18,8 +19,11 @@ export class CartComponent {
   links !: Link[];
   pageInfo: any;
 
+  title = "The Light Projekt | Le Panier"
 
-  constructor(private cartFacade : CartFacadeService, private router : Router){
+  constructor(private cartFacade : CartFacadeService, private router : Router,
+    private titleService: Title,  
+    private metaTagService: Meta ){
     this.cart$ = this.cartFacade.cartItems$;
     this.total$ = this.cartFacade.totalPrice$;
     this.cartFacade.pageInfo$.pipe(first()).subscribe(pageInfo => this.pageInfo = pageInfo);
@@ -27,6 +31,8 @@ export class CartComponent {
 
   ngOnInit(){
     this.cartFacade.links$.pipe(first()).subscribe(links => this.links = links);
+    this.titleService.setTitle(this.title);
+    this.metaTagService.updateTag({name:'robots', content: 'noindex, nofollow'})
   }
 
   closeClick(id: string){
@@ -39,5 +45,9 @@ export class CartComponent {
       console.log('Redirection effectuée vers la page de checkout');
     });
   }
+
+
+
+
 
 }
