@@ -18,8 +18,7 @@ import { Order } from '../interfaces/Order';
 })
 export class CheckoutService {
 
-  private apiUrl = 'https://payment.thelightprojekt.com';
-  private paymentApi = 'https://payment.thelightprojekt.com'
+  private apiUrl = process.env['API_URI'];
 
   constructor(private http: HttpClient) { }
 
@@ -82,7 +81,7 @@ export class CheckoutService {
   }
 
   postPaymentIntent(data: any){
-    const url  = `${this.paymentApi}/create-payment-intent`;
+    const url  = `${this.apiUrl}/create-payment-intent`;
     return this.http.post<any>(url, data);
   }
 

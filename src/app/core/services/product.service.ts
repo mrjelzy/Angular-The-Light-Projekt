@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
-  private apiUrl = 'https://directus.thelightprojekt.com';
+  private apiUrl = 'https://api.thelightprojekt.com';
 
   constructor(private http: HttpClient) { }
 

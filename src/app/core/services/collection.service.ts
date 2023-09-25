@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CollectionService {
 
-  private apiUrl = 'https://payment.thelightprojekt.com';
+  private apiUrl = 'https://api.thelightprojekt.com';
 
   constructor(private http: HttpClient) { }
 
