@@ -110,7 +110,7 @@ export class PaymentComponent {
             email: this.checkoutFacade.getGuest().email,
           },
         },
-      return_url: `http://localhost:4200/confirmation`,
+      return_url: `https://thelightprojekt.com/confirmation`,
       },
       redirect: 'always',
     }).subscribe(result => {

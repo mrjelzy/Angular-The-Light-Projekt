@@ -14,7 +14,7 @@ const httpOptions = {
 })
 export class WebContentService {
 
-  private apiUrl = 'https://directus.thelightprojekt.com';
+  private apiUrl = 'https://payment.thelightprojekt.com';
 
   constructor(private http: HttpClient) { }
 

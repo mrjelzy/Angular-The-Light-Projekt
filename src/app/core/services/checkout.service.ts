@@ -18,7 +18,7 @@ import { Order } from '../interfaces/Order';
 })
 export class CheckoutService {
 
-  private apiUrl = 'https://directus.thelightprojekt.com';
+  private apiUrl = 'https://payment.thelightprojekt.com';
   private paymentApi = 'https://payment.thelightprojekt.com'
 
   constructor(private http: HttpClient) { }
