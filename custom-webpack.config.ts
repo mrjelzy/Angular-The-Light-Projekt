@@ -6,7 +6,7 @@ config();
 module.exports = {
   plugins: [
     new EnvironmentPlugin([
-      'DIRECTUS_API_KEY',
+      'API_URI',
       'PAYMENT_API_KEY'
     ])
   ]
