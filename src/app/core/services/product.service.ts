@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
-  private apiUrl = 'https://api.thelightprojekt.com';
+  private apiUrl = process.env['API_URI'];
 
   constructor(private http: HttpClient) { }
 
