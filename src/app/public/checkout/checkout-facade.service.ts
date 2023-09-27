@@ -300,7 +300,7 @@ export class CheckoutFacadeService {
       this.updateSelectedFiles(itemId, file);
       this.updateItemFileSelections(itemId, true);
       this.updateItemSendPrescriptionLater(itemId, false);
-      
+
     } else if (option === 'later') {
       this.updateItemFileSelections(itemId, false);
       this.updateSelectedFiles(itemId, null);
@@ -433,7 +433,7 @@ export class CheckoutFacadeService {
       },
       error => {
         console.error("Erreur lors de l'envoi des fichiers ou de la création des prescriptions:", error);
-        this.errorSubject.next("Erreur lors de l'envoi des fichiers ou de la création des prescriptions:");
+        this.errorSubject.next("Erreur lors de l'envoi des fichiers");
         this.setLoading(false);
       }
     );
