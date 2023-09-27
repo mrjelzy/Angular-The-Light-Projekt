@@ -294,7 +294,7 @@ export class CheckoutFacadeService {
 
   handleOptionChange(event: any, option: 'file' | 'later', itemId: number): void {
     if (option === 'file') {
-      const files = event.target.files || event.dataTransfer.files;
+      const files = event.target.files;
       const file = files[0];
 
       if(file){
@@ -438,7 +438,7 @@ export class CheckoutFacadeService {
       },
       error => {
         console.error("Erreur lors de l'envoi des fichiers ou de la création des prescriptions:", error);
-        this.errorSubject.next('An error has occurred, please try again');
+        this.errorSubject.next(error);
         this.setLoading(false);
       }
     );

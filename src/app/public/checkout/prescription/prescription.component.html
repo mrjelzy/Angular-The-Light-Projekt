@@ -18,7 +18,7 @@
                         [checked]="(itemFileSelections$ | async)?.[item.directusId]"
                         (click)="fileInput.click()" />
 
-                        <input style="display: none" type="file" accept="image/*" capture="camera" (change)="handleOptionChange($event ,'file', item.directusId)" #fileInput />
+                        <input style="display: none" type="file" accept="image/*" (change)="handleOptionChange($event ,'file', item.directusId)" #fileInput />
                     </label>
 
                     <label
