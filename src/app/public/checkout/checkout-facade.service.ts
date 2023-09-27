@@ -294,7 +294,7 @@ export class CheckoutFacadeService {
 
   handleOptionChange(event: any, option: 'file' | 'later', itemId: number): void {
     if (option === 'file') {
-      this.updateSelectedFiles(itemId, event.target.files[0]);
+      this.updateSelectedFiles(itemId, event.target.files.item(0));
       this.updateItemFileSelections(itemId, true);
       this.updateItemSendPrescriptionLater(itemId, false);
     } else if (option === 'later') {
