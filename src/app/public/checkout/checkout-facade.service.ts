@@ -294,9 +294,18 @@ export class CheckoutFacadeService {
 
   handleOptionChange(event: any, option: 'file' | 'later', itemId: number): void {
     if (option === 'file') {
-      this.updateSelectedFiles(itemId, event.target.files.item(0));
-      this.updateItemFileSelections(itemId, true);
-      this.updateItemSendPrescriptionLater(itemId, false);
+      const files = event.target.files || event.dataTransfer.files;
+      const file = files[0];
+
+      if(file){
+        this.updateSelectedFiles(itemId, file);
+        this.updateItemFileSelections(itemId, true);
+        this.updateItemSendPrescriptionLater(itemId, false);
+      }else{
+        this.errorSubject.next('Erreur file');
+        this.setLoading(false);
+      }
+
     } else if (option === 'later') {
       this.updateItemFileSelections(itemId, false);
       this.updateSelectedFiles(itemId, null);
