@@ -297,15 +297,10 @@ export class CheckoutFacadeService {
       const files = event.target.files;
       const file = files[0];
 
-      if(file){
-        this.updateSelectedFiles(itemId, file);
-        this.updateItemFileSelections(itemId, true);
-        this.updateItemSendPrescriptionLater(itemId, false);
-      }else{
-        this.errorSubject.next('Erreur file');
-        this.setLoading(false);
-      }
-
+      this.updateSelectedFiles(itemId, file);
+      this.updateItemFileSelections(itemId, true);
+      this.updateItemSendPrescriptionLater(itemId, false);
+      
     } else if (option === 'later') {
       this.updateItemFileSelections(itemId, false);
       this.updateSelectedFiles(itemId, null);
@@ -438,7 +433,7 @@ export class CheckoutFacadeService {
       },
       error => {
         console.error("Erreur lors de l'envoi des fichiers ou de la création des prescriptions:", error);
-        this.errorSubject.next(error);
+        this.errorSubject.next("Erreur lors de l'envoi des fichiers ou de la création des prescriptions:");
         this.setLoading(false);
       }
     );

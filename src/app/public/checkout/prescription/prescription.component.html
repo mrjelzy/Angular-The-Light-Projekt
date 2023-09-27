@@ -12,7 +12,7 @@
                                                 {{ (itemFileSelections$ | async)?.[item.directusId] ? 'border-blue-500 text-blue-500' : 'border-gray-700 text-black' }}">
                         <strong class="font-medium">{{ (itemFileSelections$ | async)?.[item.directusId] ? 'Fichier chargé' : 'Téléchargez une photo' }}</strong>
                         <p class="mt-1 text-xs font-medium text-gray-700">
-                            {{ (itemFileSelections$ | async)?.[item.directusId] ? (selectedFiles$ | async)?.[item.directusId]?.name : 'La méthode la plus rapide' }}
+                            {{ (itemFileSelections$ | async)?.[item.directusId] ? (selectedFiles$ | async)?.[item.directusId]?.name : 'La méthode la plus rapide (Taille Max 5MB)' }}
                         </p>
                         <input type="radio" name="prescriptionOption" value="file" class="opacity-0 w-0 h-0 absolute"
                         [checked]="(itemFileSelections$ | async)?.[item.directusId]"
