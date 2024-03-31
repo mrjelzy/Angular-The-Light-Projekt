@@ -2,7 +2,8 @@
     <div class="text-sm mt-4 w-full p-3 bg-gray-50 text-center border" >
         {{ pageInfo.header }}
     </div>
-    <ng-container *ngIf="this.total$ | async as total;else noTotal">
+    <ng-container *ngIf="total$ | async as total; else noTotal">
+        <ng-container *ngIf="delivery$ | async as delivery">
         <h2 class="text-xl lg:text-3xl text-black capitalize pt-6 mb-6 text-center lg:text-justify">{{ pageInfo.cart_title }} : {{ total }}€</h2>
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 pt-4">
             <div class="lg:col-span-2">
@@ -16,9 +17,11 @@
             [totalText]="pageInfo.total"
             [summary]="pageInfo.order_summary"
             [free_shipping]="pageInfo.free_shipping"
+            [shippingPrice]="delivery.price"
             (btnClick)="nextClick()"
             ></app-cart-subtotal>
           </div>
+          </ng-container>
     </ng-container>
 
     <ng-template #noTotal>

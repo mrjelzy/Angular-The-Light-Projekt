@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-homepage',
@@ -22,14 +23,16 @@ export class HomepageComponent {
   title = 'The Light Projekt | Lunettes de vue et de soleil'
   description = 'Découvrez des Lunettes de vue et de Soleil Premium. Livraison Gratuite à domicile.'
 
-  constructor(private titleService: Title, private metaService: Meta) {
+  constructor(private seoService : SeoService) {
   }
 
   ngOnInit(){
-    this.titleService.setTitle(this.title);
-    this.metaService.updateTag({ name: 'description', content: this.description });
-    this.metaService.updateTag( { name: 'keywords', content: 'lunettes, vue, optique' });
-    this.metaService.updateTag({name:'robots', content: 'index, follow'});
+    this.seoService.updateTitle(this.title);
+    this.seoService.updateMetaTags([
+      { name: 'description', content: this.description },
+      { name: 'keywords', content: 'lunettes, vue, optique' }
+    ]);
+    this.seoService.addRobotsMeta(false, false);
   }
 
 }

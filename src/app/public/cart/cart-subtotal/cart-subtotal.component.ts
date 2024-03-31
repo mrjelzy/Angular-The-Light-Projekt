@@ -11,6 +11,7 @@ export class CartSubtotalComponent {
   @Input() subtotal!: string;
   @Input() shipping!: string;
   @Input() free_shipping!: string;
+  @Input() shippingPrice !: number;
   @Input() totalText!: string;
   @Input() next!: string;
   @Output() btnClick = new EventEmitter();

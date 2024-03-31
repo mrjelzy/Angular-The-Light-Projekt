@@ -56,4 +56,14 @@ export class ProductService {
     return this.http.get<any>(url);
   }
 
+  getProductOption(id : number): Observable<any>{
+    const url = `${this.apiUrl}/items/products_options/${id}`;
+    return this.http.get<any>(url);
+  }
+
+  getProductAttribute(id : number): Observable<any>{
+    const url = `${this.apiUrl}/items/products_attributes/${id}`;
+    return this.http.get<any>(url);
+  }
+
 }

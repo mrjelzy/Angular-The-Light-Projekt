@@ -30,9 +30,7 @@ export class LoginOrGuestComponent {
   }
 
   clickGuest(){
-    this.router.navigate(['/checkout/guest']).then(() => {
-        console.log('Redirection effectuée pour obtenir les informations du guest');
-    });
+    this.router.navigate(['/checkout/guest']);
 
   }
 

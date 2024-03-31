@@ -5,6 +5,7 @@ import { OrderTrackingFacadeService } from '../order-tracking-facade.service';
 import { OrderResponse } from 'src/app/core/interfaces/OrderResponse';
 import { first } from 'rxjs';
 import { Meta, Title } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-order-tracking-page',
@@ -19,12 +20,11 @@ export class OrderTrackingPageComponent {
   data !: OrderResponse | null;
   error : any | null = null;
 
-  title = "The Light Projekt | Suivre ma commande"
+  title = "Suivre ma commande | The Light Projekt"
 
   constructor(private formBuilder: FormBuilder, private orderTrackingFacade : OrderTrackingFacadeService,
               private router : Router,
-              private titleService: Title,  
-              private metaTagService: Meta  ){}
+              private seoService :SeoService){}
 
   ngOnInit(){
     this.form = this.formBuilder.group({
@@ -32,8 +32,8 @@ export class OrderTrackingPageComponent {
       orderNumber: ['', [Validators.required, Validators.pattern('[0-9]*')]],
     });
 
-    this.titleService.setTitle(this.title);
-    this.metaTagService.updateTag({name:'robots', content: 'noindex, nofollow'})
+    this.seoService.updateTitle(this.title);
+    this.seoService.addRobotsMeta(true, true);
   }
 
   get emailControl() {
@@ -48,7 +48,6 @@ export class OrderTrackingPageComponent {
     this.submitted = true;
     if (this.form.valid) {
       // Le formulaire est valide, vous pouvez soumettre les données
-      console.log('Formulaire valide. Soumission des données...');
 
       const emailValue = this.form.get('email')?.value;
       const orderNumberValue = this.form.get('orderNumber')?.value;
@@ -65,14 +64,11 @@ export class OrderTrackingPageComponent {
 
     } else {
       // Le formulaire est invalide, affichez un message d'erreur ou prenez des mesures
-      console.log('Le formulaire est invalide. Veuillez corriger les erreurs.');
     }
   }
 
   redirectToNextStep(){
-    this.router.navigate(['/order-tracking/detail']).then(() => {
-      console.log('Redirection effectuée pour obtenir les prescriptions');
-    });
+    this.router.navigate(['/order-tracking/detail']);
   }
 
 

@@ -40,6 +40,7 @@
               <h2 class="text-xl font-bold text-center mx-auto text-gray-700 capitalize">{{ attribute.title }}</h2>
             
               <div *ngFor="let optionId of attribute.options_relation; let i = index">
+                <ng-container *ngIf="isOptionAvailable(optionId)">
                 <input
                   type="radio"
                   [attr.id]="'Option' + attribute.id + '_Radio' + i"
@@ -64,6 +65,7 @@
                 </div>
                 
                 </label>
+                </ng-container>
               </div>
             </fieldset> 
 

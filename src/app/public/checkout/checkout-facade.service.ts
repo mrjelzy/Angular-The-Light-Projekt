@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { PrescriptionConfiguration } from 'src/app/core/interfaces/PrescriptionConfiguration';
 import { Address } from 'src/app/core/interfaces/Address';
 import { Order } from 'src/app/core/interfaces/Order';
+import { Delivery } from 'src/app/core/interfaces/Delivery';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class CheckoutFacadeService {
   guestId !: number;
   cartId !: number;
   total$ !: Observable<number>;
+  delivery$ !: Observable<Delivery | null>
 
   private secretTokenIntent = new BehaviorSubject<string>("");
   secretTokenIntent$ = this.secretTokenIntent.asObservable();
@@ -69,6 +71,15 @@ export class CheckoutFacadeService {
     this.total$.pipe(take(1)).subscribe(total => totalPrice = total);
     return totalPrice;
   }
+
+  getDeliveryMethodId(){
+    let deliveryId = 0;
+    this.delivery$.pipe(take(1)).subscribe(delivery => {
+      if(delivery)
+        deliveryId = delivery?.id
+    });
+    return deliveryId;
+  }
   
   setLoading(value : boolean){
     this.loadingSubject.next(value);
@@ -83,31 +94,32 @@ export class CheckoutFacadeService {
 
     this.configurations$ = this.cartFacade.cartItems$;
     this.total$ = this.cartFacade.totalPrice$;
+    this.delivery$ = this.cartFacade.delivery$;
   }
 
   createGuestAndConfigurationAndCart() {
-    console.log("Creating guest...");
+    // console.log("Creating guest...");
     return this.createGuest().pipe(
       switchMap(guestId => this.configurations$.pipe(
         take(1),
         concatMap(configurations => {
 
           if (configurations.length === 0) {
-            console.log("No configurations found. Skipping creation.");
+            // console.log("No configurations found. Skipping creation.");
             // Rediriger ici vers la page appropriée
             return EMPTY; // Ne rien faire si pas de configurations
           }
 
-          console.log("Creating configurations...");
+          // console.log("Creating configurations...");
           const createConfigurationsObservables = configurations.map(config =>
             this.createConfiguration(config)
           );
 
           return forkJoin(createConfigurationsObservables).pipe(
             switchMap(createdConfigurationIds => {
-              console.log("Configurations created:", createdConfigurationIds);
+              // console.log("Configurations created:", createdConfigurationIds);
               const configurationIds = createdConfigurationIds.filter(id => id !== undefined) as number[];
-              console.log("Creating cart...");
+              // console.log("Creating cart...");
               return this.createCart(guestId, configurationIds);
             })
           );
@@ -117,7 +129,7 @@ export class CheckoutFacadeService {
   }
 
   private createGuest() : Observable<number> {
-    console.log("Creating guest...");
+    // console.log("Creating guest...");
 
     if(this._guest && this._guest.id){
       return of(this._guest.id);
@@ -126,11 +138,11 @@ export class CheckoutFacadeService {
       return this.checkoutService.postGuest(this._guest).pipe(
         concatMap(response => {
           this._guest = response.data;
-          console.log("Guest created:", response.data.id);
+          // console.log("Guest created:", response.data.id);
           return of(response.data.id)
         }),
         catchError(error => {
-          console.error("Error creating guest:", error);
+          // console.error("Error creating guest:", error);
           this.errorSubject.next('An error has occurred, please try again');
           this.setLoading(false);
           return throwError(error);
@@ -139,7 +151,7 @@ export class CheckoutFacadeService {
   }
 
   private createConfiguration(configuration: Configuration): Observable<number> {
-    console.log("Creating configuration...");
+    // console.log("Creating configuration...");
     let createdConfigurationId: number;
 
     let _configuration : ConfigurationForApi = {
@@ -151,30 +163,30 @@ export class CheckoutFacadeService {
       concatMap(response => {
         createdConfigurationId = response.data.id; 
         configuration.directusId = response.data.id;// Store the created configuration ID
-        console.log("Configuration created:", createdConfigurationId);
+        // console.log("Configuration created:", createdConfigurationId);
   
         // Create and link attributes and options to the configuration
         return this.createAttributesAndOptionsForConfiguration(createdConfigurationId, configuration.attributes, configuration.options);
       }),
       catchError(error => {
-        console.error('Error creating configuration:', error);
+        // console.error('Error creating configuration:', error);
         this.errorSubject.next('An error has occurred, please try again');
         this.setLoading(false);
         return throwError(error);
       }),
       // Return the created configuration ID
       concatMap(() => {
-        console.log("Returning configuration ID:", createdConfigurationId);
+        // console.log("Returning configuration ID:", createdConfigurationId);
         return of(createdConfigurationId);
       })
     );
   }
   
   private createAttributesAndOptionsForConfiguration(configurationId: number, attributes: Attribute[] | undefined, options: Option[] | undefined): Observable<any> {
-    console.log("Creating attributes and options for configuration...");
+    // console.log("Creating attributes and options for configuration...");
     // Create and link attributes and options to the configuration using CheckoutService
     if(!attributes || !options){
-      console.log("No attributes or options, returning EMPTY");
+      // console.log("No attributes or options, returning EMPTY");
       return of(EMPTY);
     }
 
@@ -198,40 +210,41 @@ export class CheckoutFacadeService {
     // Use forkJoin to wait for all observables to complete
     return forkJoin(allObservables).pipe(
       catchError(error => {
-        console.error('Error creating attributes or options:', error);
+        // console.error('Error creating attributes or options:', error);
         this.errorSubject.next('An error has occurred, please try again');
         this.setLoading(false);
         return throwError(error);
       }),
       concatMap(() => {
-        console.log("Attributes and options created for configuration:", configurationId);
+        // console.log("Attributes and options created for configuration:", configurationId);
         return of(configurationId);
       })
     );
   }
 
   private createCart(guestId : number , configurationIds : number[]){
-    console.log("Creating cart...");
-    console.log("Guest ID:", guestId);
-    console.log("Configuration IDs:", configurationIds);
+    // console.log("Creating cart...");
+    // console.log("Guest ID:", guestId);
+    // console.log("Configuration IDs:", configurationIds);
 
     if (configurationIds.length === 0) {
-      console.log("No configurations found. Skipping cart creation.");
+      // console.log("No configurations found. Skipping cart creation.");
       return EMPTY; // Ne rien faire si pas de configurations
     }
-    console.log("Creating cart...");
+    // console.log("Creating cart...");
 
 
     const cart: Cart = {
       guest: guestId,
       state: 0,
-      total : this.getTotal()
+      total : this.getTotal(),
+      delivery_method : this.getDeliveryMethodId() 
     };
   
     return this.checkoutService.postCart(cart).pipe(
       concatMap(cartResponse => {
         const cartId = cartResponse.data.id; // Récupère l'ID du cart créé
-        console.log("Cart created:", cartId);
+        // console.log("Cart created:", cartId);
         this.cartId = cartId;
         // Crée les relations entre le cart et les configurations
         const createCartConfigurationsObservables = configurationIds.map(configId =>
@@ -373,7 +386,7 @@ export class CheckoutFacadeService {
         this.uploadFilesAndCreatePrescriptions(configurationsWithFiles);
       } else {
         // Aucun fichier ou option "later" sélectionné, vous pouvez définir ici un comportement en conséquence
-        console.log("Aucun fichier ou option 'later' sélectionné.");
+        // console.log("Aucun fichier ou option 'later' sélectionné.");
       }
     });
   }
@@ -384,13 +397,13 @@ export class CheckoutFacadeService {
         const folder = '4b0a87ce-4402-43eb-9d1f-e64d4408e888'; // Remplacez par le nom de votre dossier sur le serveur
         return this.checkoutService.postFile(item.file, folder).pipe(
           switchMap(fileResponse => {
-            console.log(fileResponse)
+            // console.log(fileResponse)
             const prescriptionData = {
               guest: this._guest.id, // Récupérez l'ID du guest
               prescription_file: fileResponse.data.id,
               send_prescription_later: false // Par défaut, le boolean est false
             };
-            console.log("File Prescription", prescriptionData)
+            // console.log("File Prescription", prescriptionData)
             if (this.itemSendPrescriptionLaterSubject.getValue()[item.itemId]) {
               prescriptionData.send_prescription_later = true;
             }
@@ -412,7 +425,7 @@ export class CheckoutFacadeService {
           guest: this._guest.id, // Récupérez l'ID du guest
           send_prescription_later: true
         };
-        console.log("Later Prescription", prescriptionData)
+        // console.log("Later Prescription", prescriptionData)
         return this.checkoutService.postPrescription(prescriptionData).pipe(
           switchMap(prescriptionResponse => {
             const relation: PrescriptionConfiguration = {
@@ -427,7 +440,7 @@ export class CheckoutFacadeService {
   
     forkJoin(uploadObservables).subscribe(
       () => {
-        console.log("Fichiers envoyés et prescriptions créées avec succès.");
+        // console.log("Fichiers envoyés et prescriptions créées avec succès.");
         // Continuer avec le reste du processus de commande
           this.setLoading(false);
       },
@@ -440,7 +453,7 @@ export class CheckoutFacadeService {
   }
   
   createAddress(address : Address){
-    console.log(this.cartId, this._guest.id);
+    // console.log(this.cartId, this._guest.id);
     if (!this.cartId || !this._guest.id) {
       console.error("L'adresse ou l'ID du panier est manquant. Impossible de créer l'adresse.");
       this.errorSubject.next('An error has occurred, please try again');
@@ -460,7 +473,7 @@ export class CheckoutFacadeService {
     // );
       this.postAddressAndPatchCart(address).pipe(
         switchMap(() => {
-          console.log(`Adresse créée et panier mis à jour.`);
+          // console.log(`Adresse créée et panier mis à jour.`);
 
           const data = {
             amount : this.getTotal()*100,
@@ -469,7 +482,7 @@ export class CheckoutFacadeService {
               guestId : this._guest.id
             }
           }
-          console.log(data);
+          // console.log(data);
           // Maintenant, appelez la méthode createPaymentIntent
           this.createPaymentIntent(data);
           // Return EMPTY pour ne pas propager de valeur à l'observable externe

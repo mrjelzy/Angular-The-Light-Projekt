@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { Attribute } from 'src/app/core/interfaces/Attribute';
 import { Option } from 'src/app/core/interfaces/Option';
 import { Product } from 'src/app/core/interfaces/Product';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { LensFacadeService } from '../lens-facade.service';
-import { first } from 'rxjs';
+import { Subscription, SubscriptionLike, first } from 'rxjs';
 import { Configuration } from 'src/app/core/interfaces/Configuration';
 import { Meta, Title } from '@angular/platform-browser';
+import { Location } from '@angular/common';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-lense',
@@ -28,17 +30,24 @@ export class LenseComponent {
 
   pageInfo !: any | null;
 
+  private locationSubscription: Subscription | undefined; // Pour stocker la souscription
+  private locationSubscriptionLike : SubscriptionLike | undefined;
+
   title = "The Light Projekt | Verres"
 
   constructor(private lensFacade : LensFacadeService, private router: Router,
-    private titleService: Title,  
-    private metaTagService: Meta ){
-  }
+    private seoService: SeoService, private location : Location) {}
 
   ngOnInit(){
+    this.locationSubscriptionLike  = this.location.subscribe((event) => {
+      if(event.type == "popstate"  && event.url == `/products/${this.frame?.product.slug}` && this.frame)
+          this.lensFacade.closeLensSelector(this.frame);
+    });
+    this.locationSubscription = this.locationSubscriptionLike as Subscription;
+
     this.loading = true;
 
-    this.lensFacade.product$.subscribe(
+    this.lensFacade.product$.pipe(first()).subscribe(
       frame => {
       if(frame == null){
         this.router.navigate(['/']);
@@ -58,10 +67,19 @@ export class LenseComponent {
         this.loading = false;
       })
 
-      this.titleService.setTitle(this.title);
-      this.metaTagService.updateTag({name:'robots', content: 'noindex, nofollow'})
+      this.seoService.updateTitle(this.title);
+      this.seoService.addRobotsMeta(true, true);
+  
   }
 
+  ngOnDestroy(){
+    this.locationSubscription?.unsubscribe();
+  }
+
+  isOptionAvailable(optionId: number): boolean {
+    return this.options.some(option => option.id === optionId);
+  }
+  
   getOptionTitle(optionId: number): string {
     const option = this.options.find((opt) => opt.id === optionId);
     return option ? option.title : 'Option non trouvée';

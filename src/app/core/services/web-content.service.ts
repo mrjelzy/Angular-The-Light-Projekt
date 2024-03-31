@@ -58,4 +58,9 @@ export class WebContentService {
     return this.http.get<any>(url);
   }
 
+  getDeliveries(): Observable<any>{
+    const url = `${this.apiUrl}/items/deliveries/`;
+    return this.http.get<any>(url);
+  }
+
 }

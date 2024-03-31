@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs';
 import { Page } from 'src/app/core/interfaces/Page';
 import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-faq-page',
@@ -15,7 +16,7 @@ export class FaqPageComponent {
   data !: Page | null;
 
   constructor(private route : ActivatedRoute, private faqFacade : FaqFacadeService,
-              private titleService: Title, private metaService: Meta){}
+              private seoService :SeoService){}
 
   ngOnInit(){
     this.route.paramMap.subscribe(params => {
@@ -23,10 +24,12 @@ export class FaqPageComponent {
       this.faqFacade.data$.pipe(first()).subscribe(data => {
         this.data = data
 
-        this.titleService.setTitle(this.data?.meta_title);
-        this.metaService.updateTag({ name: 'description', content: this.data.meta_description });
-        this.metaService.updateTag({ name: 'keywords', content: this.data.meta_keywords });
-        this.metaService.updateTag({name:'robots', content: 'index, follow'});
+        this.seoService.updateTitle(this.data?.meta_title);
+        this.seoService.updateMetaTags([
+          { name: 'description', content: this.data.meta_description },
+          { name: 'keywords', content: this.data.meta_keywords }
+        ]);
+        this.seoService.addRobotsMeta(false, false);
       });
 
     });

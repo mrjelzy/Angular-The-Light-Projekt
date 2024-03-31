@@ -58,7 +58,7 @@ export class AddressComponent implements OnInit {
     if (this.form.valid) {
       // Save the address information or perform any necessary action here
       // For example, you can use the CheckoutFacadeService to update the address data
-      console.log('Formulaire valide. Soumission des données...');
+      // console.log('Formulaire valide. Soumission des données...');
 
       const addressInput = this.form.get('address')?.value;
       const cityInput = this.form.get('city')?.value;
@@ -88,16 +88,12 @@ export class AddressComponent implements OnInit {
   checkIfGuest(){
     const guest = this.checkoutFacade.getGuest();
     if (!guest || !guest.id) {
-      this.router.navigate(['/checkout/guest']).then(() => {
-        console.log('Redirection effectuée vers la page Guest');
-      });
+      this.router.navigate(['/checkout/guest']);
     }
   }
 
   redirectToNextStep(){
-    this.router.navigate(['/checkout/payment']).then(() => {
-      console.log('Redirection effectuée pour obtenir les prescriptions');
-    });
+    this.router.navigate(['/checkout/payment']);
   }
 
   closeModal(){

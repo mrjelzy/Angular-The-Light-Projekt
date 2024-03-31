@@ -4,6 +4,7 @@ import { Page } from 'src/app/core/interfaces/Page';
 import { PageFacadeService } from '../page-facade.service';
 import { first } from 'rxjs';
 import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-simple-page',
@@ -15,7 +16,7 @@ export class SimplePageComponent {
   data !: Page | null;
 
   constructor(private route : ActivatedRoute, private pageFacade : PageFacadeService,
-              private titleService: Title, private metaService: Meta, private router : Router){}
+    private seoService: SeoService, private router : Router){}
 
   ngOnInit(){
     this.route.paramMap.subscribe(params => {
@@ -26,10 +27,12 @@ export class SimplePageComponent {
         if( this.data == undefined ){
           this.router.navigate(['/not-found'])
         }else{
-          this.titleService.setTitle(this.data.meta_title);
-          this.metaService.updateTag({ name: 'description', content: this.data.meta_description });
-          this.metaService.updateTag( { name: 'keywords', content: this.data.meta_keywords });
-          this.metaService.updateTag({name:'robots', content: 'index, follow'});
+          this.seoService.updateTitle(this.data.meta_title);
+          this.seoService.updateMetaTags([
+            { name: 'description', content: this.data.meta_description },
+            { name: 'keywords', content: this.data.meta_keywords }
+          ]);
+          this.seoService.addRobotsMeta(false, false);
         }
 
       });

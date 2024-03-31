@@ -6,7 +6,7 @@
     </div>
     <div class="flex justify-between py-4 border-b">
       <p class="text-gray-700">{{ shipping }}</p>
-      <p class="text-gray-700">{{ free_shipping }}</p>
+      <p class="text-gray-700">{{ shippingPrice == 0 ? free_shipping : shippingPrice }}</p>
     </div>
     <div class="flex justify-between py-4">
       <p class="text-lg font-bold">{{ totalText }}</p>

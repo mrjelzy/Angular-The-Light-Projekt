@@ -34,7 +34,7 @@ export class ProductFacadeService {
         take(1)
       );
 
-      this.collection$ = this.product$.pipe(switchMap(product => this.loadCollection(product.collection_relation)));
+      this.collection$ = this.product$.pipe(switchMap(product => this.loadCollection(product.collection_relation)), take(1));
 
       this.pageInfo$ = this.loadPageContent();
       
@@ -44,14 +44,14 @@ export class ProductFacadeService {
             return this.loadThumbnail(product.thumbnail).pipe(
               switchMap(thumbnail => {
                 return this.loadImages(product.id).pipe(
-                  map(images => [thumbnail, ...images]) // Ajouter la thumbnail au début du tableau
+                  map(images => [thumbnail, ...images]), take(1) // Ajouter la thumbnail au début du tableau
                 );
-              })
+              }), take(1)
             );
           } else {
             return of([]); // Pas de produit, pas d'images
           }
-        })
+        }), take(1)
       );
 
     }
@@ -74,7 +74,7 @@ export class ProductFacadeService {
             return this.loadSingleImages(productImageRelation);
           }
           return of([]);
-        })
+        }), take(1)
       );
     }
   
@@ -116,14 +116,9 @@ export class ProductFacadeService {
         this.cartFacade.setProduct(newItem);
 
         if(product.rx){
-          this.router.navigate(['/rx-service']).then(() => {
-            console.log('Redirection effectuée avec succès');
-          });
+          this.router.navigate(['/rx-service']);
         }else{
-          this.router.navigate(['/cart']).then(() => {
-            console.log('Redirection effectuée avec succès');
-        });
-
+          this.router.navigate(['/cart']);
       }});
   
 

@@ -63,10 +63,7 @@ export class PrescriptionComponent {
   }
 
   redirectToNextStep() {
-      console.log("je peux continuer vers address");
-      this.router.navigate(['/checkout/address']).then(() => {
-        console.log('Redirection effectuée pour obtenir l\'address');
-      });
+      this.router.navigate(['/checkout/address']);
   }
 
   closeModal(){
@@ -77,9 +74,7 @@ export class PrescriptionComponent {
   checkIfGuest(){
     const guest = this.checkoutFacade.getGuest();
     if (!guest || !guest.id) {
-      this.router.navigate(['/checkout/guest']).then(() => {
-        console.log('Redirection effectuée vers la page Guest');
-      });
+      this.router.navigate(['/checkout/guest']);
     }
   }
   

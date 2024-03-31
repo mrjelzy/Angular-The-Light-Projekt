@@ -27,67 +27,65 @@ export class LensFacadeService {
       take(1),
       switchMap(product => {
       if(product){
-        return this.loadSequence(product.product.collection_relation)
+        return this.loadAttributes(product.product)
       }else { // Redirect to the home page or another desired route
         return of([]); // Return an empty observable in case of no product
       }
     }));
 
-    this.options$ = this.attributes$.pipe(
-      take(1),
-      switchMap(attributes => {
-        if(attributes.length > 0){
-          return this.loadOptions(attributes)
-        }else{
-          return of([]);
-        }
-      }));
+    this.options$ = this.product$.pipe(
+      switchMap(product => 
+        this.attributes$.pipe(
+          take(1),
+          switchMap(attributes => {
+            if (attributes.length > 0 && product) {
+              // Maintenant, on passe product à loadOptions
+              return this.loadOptions(attributes, product.product);
+            } else {
+              // Aucun attribut ou produit trouvé, on retourne un tableau vide
+              return of([]);
+            }
+          })
+        )
+      )
+    );
    }
 
-   private loadSequence(productId: number): Observable<Attribute[]> {
-    return this.productService.getSequenceByCollectionId(productId).pipe(
-      // tap(result => console.log('Sequence data:', result)),
+
+  private loadAttributes(product: Product): Observable<Attribute[]> {
+  const attributesObservables: Observable<Attribute>[] = [];
+
+  for (const attributeRelationId of product.attributes_relation) {
+    const attributeObservable = this.productService.getProductAttribute(attributeRelationId).pipe(
       switchMap(result => {
-        const sequence = result.data[0];
-        // console.log('Loaded sequence:', sequence);
-        if (sequence && sequence.attributes_relation.length > 0) {
-          return this.loadAttributes(sequence.attributes_relation);
-        }
-        console.log('No attributes_relation found.');
-        return of([]);
+        return this.productService.getAttributeById(result.data.attributes_id).pipe(
+          map(details => details.data)
+        );
       }),
       take(1)
     );
+    attributesObservables.push(attributeObservable);
   }
 
-  private loadAttributes(attributeIds: number[]) {
-    const attributesObservables = attributeIds.map(attributeId =>
-      this.productService.getSequenceAttribute(attributeId).pipe(
-        // tap(sequenceAttribute => console.log(sequenceAttribute)),
-        switchMap((sequenceAttribute) => {
-          return this.productService.getAttributeById(sequenceAttribute.data.attributes_id).pipe(
-            map(result => result.data)
+  return combineLatest(attributesObservables);
+}
+  
+
+  private loadOptions(attributes: Attribute[], product: Product): Observable<Option[]> {
+    const optionsObservables: Observable<Option>[] = [];
+
+    for (const optionRelationId of product.options_relation) {
+      const optionObservable = this.productService.getProductOption(optionRelationId).pipe(
+        switchMap(result => {
+          return this.productService.getOptionById(result.data.options_id).pipe(
+            map(details => details.data)
           );
         }),
         take(1)
-      )
-    );
-    return combineLatest(attributesObservables);
-  }
-
-  private loadOptions(attributes: Attribute[]): Observable<Option[]> {
-    const optionsObservables: Observable<Option>[] = [];
-    
-    for (const attribute of attributes) {
-      for (const optionRelationId of attribute.options_relation) {
-        const optionObservable = this.productService.getOptionById(optionRelationId).pipe(
-          map(result => result.data),
-          take(1)
-        );
-        optionsObservables.push(optionObservable);
-      }
+      );
+      optionsObservables.push(optionObservable);
     }
-
+  
     return combineLatest(optionsObservables);
   }
 

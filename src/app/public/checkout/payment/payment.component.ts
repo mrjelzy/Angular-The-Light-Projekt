@@ -69,7 +69,7 @@ export class PaymentComponent {
       this.paying = true;
       this.elements.submit().then(async (result) => {
         if (result.error) {
-          console.log(result.error);
+          // console.log(result.error);
           this.checkoutFacade.setLoading(false);
           this.error = result.error;
           this.paying = false;
@@ -87,7 +87,7 @@ export class PaymentComponent {
     this.elements.submit().then(async (result) => {
 
       if (result.error) {
-        console.log(result.error);
+        // console.log(result.error);
         this.checkoutFacade.setLoading(false);
         this.error = result.error;
         this.paying = false;
@@ -117,7 +117,7 @@ export class PaymentComponent {
       this.checkoutFacade.setLoading(false);
       this.paying = false;
       this.error = result.error;
-      console.log(this.error);
+      // console.log(this.error);
     });
   }
 

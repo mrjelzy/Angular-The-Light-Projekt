@@ -62,7 +62,7 @@ export class GuestComponent {
     this.submitted = true;
     if (this.form.valid) {
       // Le formulaire est valide, vous pouvez soumettre les données
-      console.log('Formulaire valide. Soumission des données...');
+      // console.log('Formulaire valide. Soumission des données...');
 
       const firstNameValue = this.form.get('firstName')?.value;
       const lastNameValue = this.form.get('lastName')?.value;
@@ -90,7 +90,7 @@ export class GuestComponent {
 
     } else {
       // Le formulaire est invalide, affichez un message d'erreur ou prenez des mesures
-      console.log('Le formulaire est invalide. Veuillez corriger les erreurs.');
+      // console.log('Le formulaire est invalide. Veuillez corriger les erreurs.');
     }
   }
 
@@ -98,13 +98,9 @@ export class GuestComponent {
     const needPrescription = this.checkoutFacade.checkIfPrescriptionNeeded();
 
     if(needPrescription){
-      this.router.navigate(['/checkout/prescription']).then(() => {
-        console.log('Redirection effectuée pour obtenir les prescriptions');
-      });
+      this.router.navigate(['/checkout/prescription']);
     }else{
-      this.router.navigate(['/checkout/address']).then(() => {
-        console.log('Redirection effectuée pour obtenir l\'address');
-      });
+      this.router.navigate(['/checkout/address']);
     }
   }
 

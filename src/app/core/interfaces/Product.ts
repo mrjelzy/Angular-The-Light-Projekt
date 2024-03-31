@@ -21,5 +21,6 @@ export interface Product {
     alt_thumbnail: string;
     collection_relation: number;
     attributes_relation: number[];
+    options_relation: number[];
     images: number[];
 }
