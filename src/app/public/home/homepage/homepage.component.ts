@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-homepage',

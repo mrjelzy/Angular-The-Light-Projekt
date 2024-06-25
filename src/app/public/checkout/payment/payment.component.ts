@@ -9,6 +9,7 @@ import {
   StripeExpressCheckoutElement,
   StripePaymentElement
 } from '@stripe/stripe-js';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -110,7 +111,7 @@ export class PaymentComponent {
             email: this.checkoutFacade.getGuest().email,
           },
         },
-      return_url: `https://thelightprojekt.com/confirmation`,
+      return_url: environment.production ? `https://thelightprojekt.com/confirmation` : `${location.origin}/confirmation`,
       },
       redirect: 'always',
     }).subscribe(result => {
