@@ -12,13 +12,14 @@ import { FileResponse } from '../interfaces/FileResponse';
 import { PrescriptionConfiguration } from '../interfaces/PrescriptionConfiguration';
 import { Address } from '../interfaces/Address';
 import { Order } from '../interfaces/Order';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckoutService {
 
-  private apiUrl = process.env['API_URI'];
+  private apiUrl = environment.apiURL;
 
   constructor(private http: HttpClient) { }
 
@@ -81,7 +82,7 @@ export class CheckoutService {
   }
 
   postPaymentIntent(data: any){
-    const url  = `${this.apiUrl}/create-payment-intent`;
+    const url  = `${this.apiUrl+environment.createPaymentIntentRoute}`;
     return this.http.post<any>(url, data);
   }
 
