@@ -1,3 +1,3 @@
 [context.staging]
-command = "npm run build:ssr --configuration=development"
+command = "npm run build:ssr:development"
 publish = "dist/thelightprojekt/browser"

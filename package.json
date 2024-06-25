@@ -10,6 +10,7 @@
     "dev:ssr": "ng run thelightprojekt:serve-ssr",
     "serve:ssr": "node dist/thelightprojekt/server/main.js",
     "build:ssr": "ng build && ng run thelightprojekt:server",
+    "build:ssr:development": "ng build --configuration=development && ng run thelightprojekt:server:development",
     "prerender": "ng run thelightprojekt:prerender"
   },
   "private": true,
